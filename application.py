@@ -20,7 +20,7 @@ app.layout = html.Div([
     html.Div(id = 'page-content')
 ])
 
-print(df_revenue.head())
+# print(df_revenue.head())
 
 @app.callback(Output('page-content', 'children'),
             [Input('url', 'pathname')])
