@@ -96,6 +96,11 @@ def revenue_App():
             ],
                 className='six columns'
             ),
+            html.Div([
+                dcc.Graph(id='month-bar')
+            ],
+                className='six columns'
+            ),
         ],
             className='row'
         ),
