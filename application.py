@@ -4,6 +4,8 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output, State
 from homepage import Homepage
 from revenue import revenue_App
+from data import df_revenue
+
 
 
 app = dash.Dash()
@@ -13,6 +15,8 @@ app.layout = html.Div([
     dcc.Location(id = 'url', refresh = False),
     html.Div(id = 'page-content')
 ])
+
+print(df_revenue.head())
 
 @app.callback(Output('page-content', 'children'),
             [Input('url', 'pathname')])
