@@ -27,6 +27,15 @@ def revenue_App():
         ],
             className='row'
         ),
+        html.Div([
+            html.H4(
+                'Revenue Data',
+                className='twelve columns',
+                style={'text-align': 'center'}
+            ),
+        ],
+            className='row'
+        ),
     ])
 
 
