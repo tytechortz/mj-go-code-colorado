@@ -46,6 +46,15 @@ def revenue_App():
             ],
                 className='eight columns'
             ),
+            html.Div([
+                dcc.Markdown('''Click on counties and use year slider to see annual county
+            revenue data displayed in graphs.  Green counties have at
+            least one form of legalized cannabis, green circles show 
+            relative per capita cannabis revenue for selected year. 
+            Select sales radio buttons to display revenue graphically below.''')
+            ],
+                className='four columns'
+            ),
         ],
             className='row'
         ),
