@@ -5,9 +5,11 @@ import pandas as pd
 from dash.dependencies import Input, Output, State
 from homepage import Homepage
 from revenue import revenue_App
-from data import df_revenue
+from data import df_revenue, sources
+import os
+from dotenv import load_dotenv
 
-
+load_dotenv()
 
 app = dash.Dash()
 application = app.server

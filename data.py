@@ -1,6 +1,7 @@
 import pandas as pd
 import geopandas as gpd
 from sodapy import Socrata
+import json
 
 client = Socrata("data.colorado.gov", None)
 
@@ -23,4 +24,15 @@ df_revenue.loc[df_revenue['tot_sales'] == 0, 'color'] = 'blue'
 df_revenue['year'] = df_revenue['year'].astype(int)
 
 counties = gpd.read_file('./data/Colorado_County_Boundaries.geojson')
-print(counties)
+# print(counties)
+df_lat_lon = counties[['COUNTY', 'CENT_LAT', 'CENT_LONG']]
+# merge revenue and county boundaries 
+df_revenue = pd.merge(df_revenue, df_lat_lon, how='left', left_on=['county'], right_on=['COUNTY'])
+
+with open('./data/Colorado_County_Boundaries.json') as json_file:
+    jdata = json_file.read()
+    topoJSON = json.loads(jdata)
+
+sources=[]
+for feat in topoJSON['features']: 
+        sources.append({"type": "FeatureCollection", 'features': [feat]})
