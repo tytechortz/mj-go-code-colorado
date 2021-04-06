@@ -10,6 +10,18 @@ body = dbc.Container([
     ],
         className='row'
     ),
+    html.Div([
+        html.Div([
+            html.H2('Revenue'),
+            html.P(""" Colorado cannabis total revenue. """),
+            dbc.Button("Click for Revenue Page", color="primary", href="/revenue"),
+        ],
+            className='twelve columns'
+        ),
+    ],
+        className='row'
+    ),
+
 ])
 
 def Homepage():
