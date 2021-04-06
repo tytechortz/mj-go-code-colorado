@@ -5,9 +5,10 @@ import pandas as pd
 from dash.dependencies import Input, Output, State
 from homepage import Homepage
 from revenue import revenue_App
-from data import df_revenue, sources
+from data import df_revenue, sources, df_rev
 import os
 from dotenv import load_dotenv
+import plotly.graph_objs as go
 
 load_dotenv()
 
@@ -29,6 +30,50 @@ def display_page(pathname):
         return revenue_App()
     else:
         return Homepage()
+
+##########################################  REVENUE CALLBACKS ###############################
+@app.callback(
+    Output('crat', 'children'),
+    Input('revenue-map', 'clickData'))
+def clean_crat(clickData):
+    county_revenue_df = df_rev.groupby(['county', 'year'])
+    crat = county_revenue_df.sum()
+    crat.reset_index(inplace=True)
+    print(crat)
+    return crat.to_json()
+
+
+@app.callback(
+            Output('rev-bar', 'figure'),
+            [Input('revenue-map', 'clickData'),
+            Input('crat', 'children')])         
+def create_rev_bar_a(clickData, crat):
+    # print(clickData)
+    # print(df_revenue.head())
+    crat = pd.read_json(crat)
+    crat.reset_index(inplace=True)
+    print(crat)
+    filtered_county = crat['county'] ==  clickData['points'][-1]['text']
+    # # print(filtered_county)
+    selected_county = crat[filtered_county]
+    # selected_county.reset_index(inplace=True)
+    print(selected_county)
+
+    trace1 = [
+        {'x': selected_county['year'], 'y': selected_county['med_sales'], 'type': 'bar', 'name': 'Med Sales' },
+        {'x': selected_county['year'], 'y': selected_county['rec_sales'], 'type': 'bar', 'name': 'Rec Sales' },
+        {'x': selected_county['year'], 'y': selected_county['tot_sales'], 'type': 'bar', 'name': 'Tot Sales' },
+    ]
+
+    
+    return {
+        'data': trace1,
+        'layout': go.Layout(
+            height = 350,
+            title = '{} COUNTY REVENUE BY YEAR'.format(clickData['points'][-1]['text'])
+        ),
+    }
+
 
 @app.callback(
      Output('revenue-map', 'figure'),

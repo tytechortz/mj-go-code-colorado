@@ -11,17 +11,22 @@ mj_results = client.get("j7a3-jgd3", limit=6000)
 
 
 # revenue data
-df_revenue = pd.DataFrame.from_records(mj_results)
-df_revenue['county'] = df_revenue['county'].str.upper()
-df_revenue.fillna(0, inplace=True)
-df_revenue['med_sales'] = df_revenue['med_sales'].astype(int)
-df_revenue['rec_sales'] = df_revenue['rec_sales'].astype(int)
-df_revenue['tot_sales'] = df_revenue['med_sales'] + df_revenue['rec_sales']
-df_revenue = df_revenue.groupby(['year', 'county']).agg({'tot_sales': 'sum'})
+df_rev = pd.DataFrame.from_records(mj_results)
+df_rev['county'] = df_rev['county'].str.upper()
+df_rev.fillna(0, inplace=True)
+df_rev['med_sales'] = df_rev['med_sales'].astype(int)
+df_rev['rec_sales'] = df_rev['rec_sales'].astype(int)
+df_rev['tot_sales'] = df_rev['med_sales'] + df_rev['rec_sales']
+# print(df_revenue.head())
+# df_cnty_rev = df_rev.groupby(['county', 'year'])
+# crat = df_cnty_rev.sum()
+# print(crat)
+df_revenue = df_rev.groupby(['year', 'county']).agg({'tot_sales': 'sum'})
 df_revenue = df_revenue.reset_index()
 df_revenue.loc[df_revenue['tot_sales'] > 0, 'color'] = 'red'
 df_revenue.loc[df_revenue['tot_sales'] == 0, 'color'] = 'blue'
 df_revenue['year'] = df_revenue['year'].astype(int)
+# print(df_revenue)
 
 counties = gpd.read_file('./data/Colorado_County_Boundaries.geojson')
 # print(counties)
@@ -36,3 +41,4 @@ with open('./data/Colorado_County_Boundaries.json') as json_file:
 sources=[]
 for feat in topoJSON['features']: 
         sources.append({"type": "FeatureCollection", 'features': [feat]})
+

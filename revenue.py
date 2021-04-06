@@ -90,6 +90,16 @@ def revenue_App():
         ],
             className='row'
         ),
+        html.Div([
+            html.Div([
+                dcc.Graph(id='rev-bar')
+            ],
+                className='six columns'
+            ),
+        ],
+            className='row'
+        ),
+        html.Div(id='crat', style={'display': 'none'}),
     ])
 
 
