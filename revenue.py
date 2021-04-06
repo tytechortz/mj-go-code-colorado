@@ -65,7 +65,7 @@ def revenue_App():
                     min=2014,
                     max=2020,
                     step=1,
-                    marks={x: '{}'.format(x) for x in range(2014, 2020)},
+                    marks={x: '{}'.format(x) for x in range(2014, 2021)},
                     value=2014
                 ),
             ],
