@@ -36,6 +36,35 @@ def revenue_App():
         ],
             className='row'
         ),
+        html.Div([
+            html.Div([
+                html.Div([
+                    dcc.Graph('revenue-map')
+                ],
+                    className='twelve columns'
+                ),
+            ],
+                className='eight columns'
+            ),
+        ],
+            className='row'
+        ),
+        html.Div([
+            html.Div([
+                dcc.Slider(
+                    id='year',
+                    min=2014,
+                    max=2020,
+                    step=1,
+                    marks={x: '{}'.format(x) for x in range(2014, 2020)},
+                    value=2014
+                ),
+            ],
+                className='eight columns'
+            ),
+        ],
+            className='row'
+        ),
     ])
 
 

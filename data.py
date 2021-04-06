@@ -1,4 +1,5 @@
 import pandas as pd
+import geopandas as gpd
 from sodapy import Socrata
 
 client = Socrata("data.colorado.gov", None)
@@ -20,3 +21,6 @@ df_revenue = df_revenue.reset_index()
 df_revenue.loc[df_revenue['tot_sales'] > 0, 'color'] = 'red'
 df_revenue.loc[df_revenue['tot_sales'] == 0, 'color'] = 'blue'
 df_revenue['year'] = df_revenue['year'].astype(int)
+
+counties = gpd.read_file('./data/Colorado_County_Boundaries.geojson')
+print(counties)
