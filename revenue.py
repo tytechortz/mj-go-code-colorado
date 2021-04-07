@@ -97,7 +97,7 @@ def revenue_App():
                 className='six columns'
             ),
             html.Div([
-                dcc.Graph(id='month-bar')
+                dcc.Graph(id='rev-scatter')
             ],
                 className='six columns'
             ),

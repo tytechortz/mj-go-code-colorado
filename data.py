@@ -17,7 +17,7 @@ df_rev.fillna(0, inplace=True)
 df_rev['med_sales'] = df_rev['med_sales'].astype(int)
 df_rev['rec_sales'] = df_rev['rec_sales'].astype(int)
 df_rev['tot_sales'] = df_rev['med_sales'] + df_rev['rec_sales']
-# print(df_revenue.head())
+# print(df_rev.head())
 # df_cnty_rev = df_rev.groupby(['county', 'year'])
 # crat = df_cnty_rev.sum()
 # print(crat)

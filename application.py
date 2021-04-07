@@ -39,25 +39,59 @@ def clean_crat(clickData):
     county_revenue_df = df_rev.groupby(['county', 'year'])
     crat = county_revenue_df.sum()
     crat.reset_index(inplace=True)
-    print(crat)
+    # print(crat)
     return crat.to_json()
 
+@app.callback(
+    Output('rev-scatter', 'figure'),
+    [Input('revenue-map', 'clickData'),
+    Input('year','value')])
+def create_rev_scat(clickData,year):
+    print(year)
+    print(df_rev)
+    year_df = df_rev[df_rev['year'] == str(year)]
+    print(year_df)
+    filtered_df = year_df[year_df['county'] == clickData['points'][-1]['text']]
+    print(filtered_df.head())
+    labels = ['Feb', 'Apr', 'Jun','Aug','Oct','Dec']
+    tickvals = [2,4,6,8,10,12]
+    traces = []
+
+    trace = [
+        go.Scatter(
+            x = filtered_df['month'],
+            y = filtered_df['tot_sales'],
+            # name = rev,
+            line = {'color':'red'} 
+        )
+    ]
+
+    return {
+            'data': traces,
+            'layout': go.Layout(
+                xaxis = {'title': 'Month','tickvals':tickvals,'tickmode': 'array','ticktext': labels},
+                yaxis = {'title': 'Revenue'},
+                hovermode = 'closest',
+                title = '{} COUNTY {} REVENUE - {}'.format(clickData['points'][-1]['text'],year,year),
+                height = 400,
+            )
+        }
 
 @app.callback(
-            Output('rev-bar', 'figure'),
-            [Input('revenue-map', 'clickData'),
-            Input('crat', 'children')])         
-def create_rev_bar_a(clickData, crat):
+    Output('rev-bar', 'figure'),
+    [Input('revenue-map', 'clickData'),
+    Input('crat', 'children')])         
+def create_month_bar(clickData, crat):
     # print(clickData)
     # print(df_revenue.head())
     crat = pd.read_json(crat)
     crat.reset_index(inplace=True)
-    print(crat)
+    # print(crat)
     filtered_county = crat['county'] ==  clickData['points'][-1]['text']
     # # print(filtered_county)
     selected_county = crat[filtered_county]
     # selected_county.reset_index(inplace=True)
-    print(selected_county)
+    # print(selected_county)
 
     trace1 = [
         {'x': selected_county['year'], 'y': selected_county['med_sales'], 'type': 'bar', 'name': 'Med Sales' },
