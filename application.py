@@ -76,7 +76,7 @@ def create_rev_scat(clickData,year):
                 yaxis = {'title': 'Revenue'},
                 hovermode = 'closest',
                 title = '{} COUNTY {} REVENUE - {}'.format(clickData['points'][-1]['text'],year,year),
-                height = 400,
+                height = 350,
             )
         }
 

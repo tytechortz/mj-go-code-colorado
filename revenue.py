@@ -87,6 +87,21 @@ def revenue_App():
             ],
                 className='six columns'
             ),
+            html.Div([
+                dcc.RadioItems(
+                    id='rev',
+                    options=[
+                        {'label':'Total Sales', 'value':'TOTAL'},
+                        {'label':'Rec Sales','value':'REC'},
+                        {'label':'Med Sales','value':'MED'},
+                    ],
+                    labelStyle={'display':'inline-block', 'margin': 0, 'padding': 1},
+                    value = 'TOTAL',
+                    style = {'text-align': 'center'}
+                    ),
+            ],
+                className='six columns'
+            ),
         ],
             className='row'
         ),
