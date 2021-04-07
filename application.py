@@ -48,24 +48,24 @@ def clean_crat(clickData):
     Input('year','value'),
     Input('rev', 'value')])
 def create_rev_scat(clickData,year,rev):
-    print(year)
+    print(type(rev))
     print(df_rev)
     year_df = df_rev[df_rev['year'] == str(year)]
-    print(year_df)
+    # print(year_df)
     filtered_df = year_df[year_df['county'] == clickData['points'][-1]['text']]
-    print(filtered_df.head())
+    # print(filtered_df.head())
     # filtered_df['month'] = filtered_df['month'].astype(int)
     filtered_df = filtered_df.sort_values('month')
-    print(filtered_df.head())
+    # print(filtered_df.head())
     labels = ['Feb', 'Apr', 'Jun','Aug','Oct','Dec']
     tickvals = [2,4,6,8,10,12]
     traces = []
 
-    if rev == 'TOTAL':
+    if 'TOTAL' in rev:
             traces.append(go.Scatter(
             x = filtered_df['month'],
             y = filtered_df['tot_sales'],
-            name = rev,
+            # name = rev,
             line = {'color':'red'} 
             ))
     elif rev == 'REC':  

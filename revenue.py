@@ -88,7 +88,7 @@ def revenue_App():
                 className='six columns'
             ),
             html.Div([
-                dcc.RadioItems(
+                dcc.Checklist(
                     id='rev',
                     options=[
                         {'label':'Total Sales', 'value':'TOTAL'},
@@ -96,7 +96,7 @@ def revenue_App():
                         {'label':'Med Sales','value':'MED'},
                     ],
                     labelStyle={'display':'inline-block', 'margin': 0, 'padding': 1},
-                    value = 'TOTAL',
+                    value = ['TOTAL'],
                     style = {'text-align': 'center'}
                     ),
             ],
