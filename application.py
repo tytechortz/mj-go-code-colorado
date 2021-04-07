@@ -45,8 +45,9 @@ def clean_crat(clickData):
 @app.callback(
     Output('rev-scatter', 'figure'),
     [Input('revenue-map', 'clickData'),
-    Input('year','value')])
-def create_rev_scat(clickData,year):
+    Input('year','value'),
+    Input('rev', 'value')])
+def create_rev_scat(clickData,year,rev):
     print(year)
     print(df_rev)
     year_df = df_rev[df_rev['year'] == str(year)]
@@ -60,6 +61,28 @@ def create_rev_scat(clickData,year):
     tickvals = [2,4,6,8,10,12]
     traces = []
 
+    if rev == 'TOTAL':
+            traces.append(go.Scatter(
+            x = filtered_df['month'],
+            y = filtered_df['tot_sales'],
+            name = rev,
+            line = {'color':'red'} 
+            ))
+    elif rev == 'REC':  
+            traces.append(go.Scatter(
+            x = filtered_df['month'],
+            y = filtered_df['rec_sales'],
+            name = rev,
+            line = {'color':'dodgerblue'}
+            ))
+    elif rev == 'MED':  
+            traces.append(go.Scatter(
+            x = filtered_df['month'],
+            y = filtered_df['med_sales'],
+            name = rev,
+            line = {'color':'black'}
+            ))
+
     trace = [
         go.Scatter(
             x = filtered_df['month'],
@@ -70,12 +93,12 @@ def create_rev_scat(clickData,year):
     ]
 
     return {
-            'data': trace,
+            'data': traces,
             'layout': go.Layout(
                 xaxis = {'title': 'Month','tickvals':tickvals,'tickmode': 'array','ticktext': labels},
                 yaxis = {'title': 'Revenue'},
                 hovermode = 'closest',
-                title = '{} COUNTY {} REVENUE - {}'.format(clickData['points'][-1]['text'],year,year),
+                title = '{} COUNTY {} REVENUE - {}'.format(clickData['points'][-1]['text'],rev,year),
                 height = 350,
             )
         }
