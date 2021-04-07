@@ -53,6 +53,9 @@ def create_rev_scat(clickData,year):
     print(year_df)
     filtered_df = year_df[year_df['county'] == clickData['points'][-1]['text']]
     print(filtered_df.head())
+    # filtered_df['month'] = filtered_df['month'].astype(int)
+    filtered_df = filtered_df.sort_values('month')
+    print(filtered_df.head())
     labels = ['Feb', 'Apr', 'Jun','Aug','Oct','Dec']
     tickvals = [2,4,6,8,10,12]
     traces = []
@@ -67,7 +70,7 @@ def create_rev_scat(clickData,year):
     ]
 
     return {
-            'data': traces,
+            'data': trace,
             'layout': go.Layout(
                 xaxis = {'title': 'Month','tickvals':tickvals,'tickmode': 'array','ticktext': labels},
                 yaxis = {'title': 'Revenue'},
