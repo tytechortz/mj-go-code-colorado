@@ -19,6 +19,10 @@ def revenue_App():
                 ],
                     className='two columns'
                 ),
+                html.H4('Revenue Data',
+                className='twelve columns',
+                style={'text-align': 'center'}
+            ),
 
             ],
                 className='twelve columns'
@@ -28,11 +32,8 @@ def revenue_App():
             className='row'
         ),
         html.Div([
-            html.H4(
-                'Revenue Data',
-                className='twelve columns',
-                style={'text-align': 'center'}
-            ),
+            
+            
         ],
             className='row'
         ),
@@ -51,9 +52,9 @@ def revenue_App():
             revenue data displayed in graphs.  Green counties have at
             least one form of legalized cannabis, green circles show 
             relative cannabis revenue for selected year. 
-            Select sales radio buttons to display revenue graphically below.''')
+            Select sales check boxes to display revenue graphically below.''')
             ],
-                className='four columns'
+                className='six columns'
             ),
         ],
             className='row'
