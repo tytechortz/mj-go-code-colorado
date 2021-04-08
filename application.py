@@ -74,32 +74,23 @@ def create_rev_scat(clickData,year,rev):
             traces.append(go.Scatter(
             x = filtered_df['month'],
             y = filtered_df['tot_sales'],
-            # name = rev,
+            name = 'Total Sales',
             line = {'color':'red'} 
             ))
     if 'REC' in rev:  
             traces.append(go.Scatter(
             x = filtered_df['month'],
             y = filtered_df['rec_sales'],
-            # name = rev,
+            name = 'Rec Sales',
             line = {'color':'dodgerblue'}
             ))
     if 'MED' in rev:  
             traces.append(go.Scatter(
             x = filtered_df['month'],
             y = filtered_df['med_sales'],
-            # name = rev,
+            name = 'Med Sales',
             line = {'color':'black'}
             ))
-
-    trace = [
-        go.Scatter(
-            x = filtered_df['month'],
-            y = filtered_df['tot_sales'],
-            # name = rev,
-            line = {'color':'red'} 
-        )
-    ]
 
     return {
             'data': traces,
