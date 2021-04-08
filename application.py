@@ -6,6 +6,7 @@ import pandas as pd
 from dash.dependencies import Input, Output, State
 from homepage import Homepage
 from revenue import revenue_App
+from pcrev import pcrev_App
 from data import df_revenue, sources, df_rev
 import os
 from dotenv import load_dotenv
@@ -29,6 +30,8 @@ app.layout = html.Div([
 def display_page(pathname):
     if pathname == '/revenue':
         return revenue_App()
+    elif pathname == '/pcrev':
+        return pcrev_App()
     else:
         return Homepage()
 
