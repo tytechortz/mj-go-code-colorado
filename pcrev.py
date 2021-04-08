@@ -52,6 +52,22 @@ def pcrev_App():
         ],
             className='row'
         ),
+        html.Div([
+            html.Div([
+                dcc.Slider(
+                    id='year',
+                    min=2014,
+                    max=2020,
+                    step=1,
+                    marks={x: '{}'.format(x) for x in range(2014, 2021)},
+                    value=2014
+                ),
+            ],
+                className='eight columns'
+            ),
+        ],
+            className='row'
+        ),
     ])
 
 app.layout = pcrev_App

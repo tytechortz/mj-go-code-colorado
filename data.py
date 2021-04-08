@@ -2,13 +2,17 @@ import pandas as pd
 import geopandas as gpd
 from sodapy import Socrata
 import json
+from datetime import datetime
+
+today = datetime.today()
+current_year = today.year
 
 client = Socrata("data.colorado.gov", None)
 
 
 # initial data fetch
 mj_results = client.get("j7a3-jgd3", limit=6000)
-
+pop_results = client.get("q5vp-adf3", limit=381504)
 
 # revenue data
 df_rev = pd.DataFrame.from_records(mj_results)
@@ -42,4 +46,27 @@ with open('./data/Colorado_County_Boundaries.json') as json_file:
 sources=[]
 for feat in topoJSON['features']: 
         sources.append({"type": "FeatureCollection", 'features': [feat]})
+
+
+#Population data
+df_pop = pd.DataFrame.from_records(pop_results)
+df_pop['totalpopulation'] = df_pop['totalpopulation'].astype(int)
+df_pop = df_pop.drop(['age', 'malepopulation', 'femalepopulation'], axis=1)
+df_pop = df_pop.groupby(['year', 'county'], as_index=False)['totalpopulation'].sum()
+df_pop['county'] = df_pop['county'].str.upper()
+df_pop['year'] = df_pop['year'].astype(int)
+df_pop_pc = df_pop[(df_pop['year'] >= 2014) & (df_pop['year'] < current_year)]
+
+#Per capita data
+df_rev_pc = df_revenue[(df_revenue['year'] >= 2014) & (df_revenue['year'] < current_year)]
+# print(df_rev_pc)
+df_pc = pd.merge(df_rev_pc, df_pop, how='left', left_on=['county', 'year'], right_on=['county', 'year'])
+
+df_pc['pc_rev'] = df_pc['tot_sales'] / df_pc['totalpopulation']
+
+df_pc.loc[df_pc['tot_sales'] > 0, 'color'] = 'red'
+df_pc.loc[df_pc['tot_sales'] == 0, 'color'] = 'blue'
+
+
+
 

@@ -7,7 +7,7 @@ from dash.dependencies import Input, Output, State
 from homepage import Homepage
 from revenue import revenue_App
 from pcrev import pcrev_App
-from data import df_revenue, sources, df_rev
+from data import df_revenue, sources, df_rev, df_pc
 import os
 from dotenv import load_dotenv
 import plotly.graph_objs as go
@@ -52,8 +52,8 @@ def clean_crat(clickData):
     Input('year','value'),
     Input('rev', 'value')])
 def create_rev_scat(clickData,year,rev):
-    print(rev)
-    print(df_rev)
+    # print(rev)
+    # print(df_rev)
     year_df = df_rev[df_rev['year'] == str(year)]
     # print(year_df)
     filtered_df = year_df[year_df['county'] == clickData['points'][-1]['text']]
@@ -65,13 +65,6 @@ def create_rev_scat(clickData,year,rev):
     tickvals = [2,4,6,8,10,12]
     traces = []
 
-    # fig = px.line(filtered_df, x='month', y='tot_sales')
-
-    # fig.update_layout(margin={'l': 40, 'b': 40, 't': 40, 'r': 40}, hovermode='closest')
-
-    # fig.update_layout()
-
-    # return fig
 
     if 'TOTAL' in rev:
             traces.append(go.Scatter(
@@ -194,6 +187,68 @@ def update_rev_map(selected_year):
     fig = dict(data=data, layout=layout)
     return fig
 
+######################### Per Cap Revenue #################
+
+
+@app.callback(
+     Output('pcrev-map', 'figure'),
+     Input('year', 'value'))         
+def update_rev_map(selected_year):
+   
+    year1 = selected_year
+    
+    df_year = df_pc.loc[df_pc['year'] == selected_year]
+    df_smr = pd.DataFrame({'county': df_year['county'], 'year': df_year.year, 'revenue per cap.': df_year.pc_rev,'CENT_LAT':df_year.CENT_LAT,
+                         'CENT_LON':df_year.CENT_LONG, 'marker_size':(df_year.pc_rev)*(.5**4)})
+
+    df_smr_filtered = df_smr.loc[df_year['color'] == 'red']
+     
+    # df_year = df_revenue.loc[df_revenue['year'] == selected_year]
+    # print(df_year)
+    # df_smr = pd.DataFrame({'county': df_year['county'], 'year': df_year.year, 'total revenue': df_year.tot_sales,'CENT_LAT':df_year.CENT_LAT,
+    #                 'CENT_LON':df_year.CENT_LONG, 'marker_size':(df_year.tot_sales)*(.5**4)})
+
+    # df_smr_filtered = df_smr.loc[df_year['color'] == 'red']
+
+    color_counties = df_smr_filtered['county'].unique().tolist()
+     
+    def fill_color():
+        for k in range(len(sources)):
+            if sources[k]['features'][0]['properties']['COUNTY'] in color_counties:
+                sources[k]['features'][0]['properties']['COLOR'] = 'lightgreen'
+            else: sources[k]['features'][0]['properties']['COLOR'] = 'white'                 
+    fill_color()
+    
+    layers=[dict(sourcetype = 'json',
+        source =sources[k],
+        below="water", 
+        type = 'fill',
+        color = sources[k]['features'][0]['properties']['COLOR'],
+        opacity = 0.5
+        ) for k in range(len(sources))]
+    data = [dict(
+        lat = df_smr['CENT_LAT'],
+        lon = df_smr['CENT_LON'],
+        text = df_smr['county'],
+        hoverinfo = 'text',
+        type = 'scattermapbox',
+        #    customdata = df['uid'],
+        marker = dict(size=df_smr['marker_size'],color='forestgreen',opacity=.5),
+        )]
+    layout = dict(
+            mapbox = dict(
+                accesstoken = os.environ.get("mapbox_token"),
+                center = dict(lat=39.05, lon=-105.5),
+                zoom = 5.85,
+                style = 'light',
+                layers = layers
+            ),
+            hovermode = 'closest',
+            height = 450,
+            margin = dict(r=0, l=0, t=0, b=0)
+            )
+    fig = dict(data=data, layout=layout)
+    return fig
 
 
 if __name__ == '__main__':
