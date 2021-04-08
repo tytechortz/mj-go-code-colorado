@@ -54,7 +54,7 @@ def revenue_App():
             relative cannabis revenue for selected year. 
             Select sales check boxes to display revenue graphically below.''')
             ],
-                className='six columns'
+                className='four columns'
             ),
         ],
             className='row'
