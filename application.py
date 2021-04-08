@@ -1,6 +1,7 @@
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
+import plotly.express as px
 import pandas as pd
 from dash.dependencies import Input, Output, State
 from homepage import Homepage
@@ -48,7 +49,7 @@ def clean_crat(clickData):
     Input('year','value'),
     Input('rev', 'value')])
 def create_rev_scat(clickData,year,rev):
-    print(type(rev))
+    print(rev)
     print(df_rev)
     year_df = df_rev[df_rev['year'] == str(year)]
     # print(year_df)
@@ -61,6 +62,14 @@ def create_rev_scat(clickData,year,rev):
     tickvals = [2,4,6,8,10,12]
     traces = []
 
+    # fig = px.line(filtered_df, x='month', y='tot_sales')
+
+    # fig.update_layout(margin={'l': 40, 'b': 40, 't': 40, 'r': 40}, hovermode='closest')
+
+    # fig.update_layout()
+
+    # return fig
+
     if 'TOTAL' in rev:
             traces.append(go.Scatter(
             x = filtered_df['month'],
@@ -68,18 +77,18 @@ def create_rev_scat(clickData,year,rev):
             # name = rev,
             line = {'color':'red'} 
             ))
-    elif rev == 'REC':  
+    if 'REC' in rev:  
             traces.append(go.Scatter(
             x = filtered_df['month'],
             y = filtered_df['rec_sales'],
-            name = rev,
+            # name = rev,
             line = {'color':'dodgerblue'}
             ))
-    elif rev == 'MED':  
+    if 'MED' in rev:  
             traces.append(go.Scatter(
             x = filtered_df['month'],
             y = filtered_df['med_sales'],
-            name = rev,
+            # name = rev,
             line = {'color':'black'}
             ))
 
@@ -100,6 +109,7 @@ def create_rev_scat(clickData,year,rev):
                 hovermode = 'closest',
                 title = '{} COUNTY {} REVENUE - {}'.format(clickData['points'][-1]['text'],rev,year),
                 height = 350,
+                font = {'size': 8}
             )
         }
 
@@ -130,7 +140,8 @@ def create_month_bar(clickData, crat):
         'data': trace1,
         'layout': go.Layout(
             height = 350,
-            title = '{} COUNTY REVENUE BY YEAR'.format(clickData['points'][-1]['text'])
+            title = '{} COUNTY REVENUE BY YEAR'.format(clickData['points'][-1]['text']),
+            font = {'size': 8}
         ),
     }
 
