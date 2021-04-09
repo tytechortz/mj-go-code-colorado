@@ -251,26 +251,34 @@ def display_cnty_pop(clickData, selected_year):
      county = clickData['points'][-1]['text']
      df_rev = df_revenue[df_revenue['county'] == county]
      df_rev = df_rev[df_rev['year'] < 2021]
-     print(df_rev)
+     print(df_pc)
+     df_pcrev = df_pc[df_pc['county'] == county]
    
      df_county_pop = df_pop[df_pop['county'] == county]
      df_county_pop = df_county_pop[(df_county_pop['year'] >= selected_year[0]) & (df_county_pop['year'] <= selected_year[1])]
 
      fig = go.Figure(
           data=[
-               go.Bar(
-                    name='Annual Revenue',
-                    x=df_rev['year'],
-                    y=df_rev['tot_sales'],
-                    yaxis='y',
-                    # offsetgroup=1
-               ),
+            #    go.Bar(
+            #         name='Annual Revenue',
+            #         x=df_rev['year'],
+            #         y=df_rev['tot_sales'],
+            #         yaxis='y',
+            #         # offsetgroup=1
+            #    ),
                go.Scatter(
                     name='Population',
                     x=df_county_pop['year'],
                     y=df_county_pop['totalpopulation'],
                     yaxis='y2',
                     # offsetgroup=2
+               ),
+               go.Bar(
+                    name='Per Cap Revenue',
+                    x=df_pcrev['year'],
+                    y=df_pcrev['pc_rev'],
+                    yaxis='y',
+                    # offsetgroup=1
                ),
             #    go.Bar(
             #         name='Business Count',
@@ -281,8 +289,8 @@ def display_cnty_pop(clickData, selected_year):
             #    ),
           ],
           layout={
-               'yaxis': {'title': 'Population'},
-               'yaxis2': {'title': 'Revenue', 'overlaying': 'y', 'side': 'right'}
+               'yaxis': {'title': 'Revenue'},
+               'yaxis2': {'title': 'Population', 'overlaying': 'y', 'side': 'right'}
           }
      )
     
