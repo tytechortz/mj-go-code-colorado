@@ -70,6 +70,22 @@ def pcrev_App():
         ),
         html.Div([
             html.Div([
+                dcc.RangeSlider(
+                    id='year2',
+                    min=1990,
+                    max=2050,
+                    step=1,
+                    # options=[{'label':x, 'value':x} for x in range(2022, 2050)],
+                    value=[2014,2020]
+                ),
+            ],
+                className='eight columns'
+            ),
+        ],
+            className='row'
+        ),
+        html.Div([
+            html.Div([
                 dcc.Graph(id='per-cap-rev-bar')
             ],
                 className='six columns'
