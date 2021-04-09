@@ -252,19 +252,9 @@ def display_cnty_pop(clickData, selected_year):
      df_rev = df_revenue[df_revenue['county'] == county]
      df_rev = df_rev[df_rev['year'] < 2021]
      print(df_rev)
-     # print(clickData)
-     # print(county)
+   
      df_county_pop = df_pop[df_pop['county'] == county]
      df_county_pop = df_county_pop[(df_county_pop['year'] >= selected_year[0]) & (df_county_pop['year'] <= selected_year[1])]
-
-    #  print(df_biz)
-    #  print(type(df_biz))
-
-     # df_biz_count = df_biz.get_group('Adams')
-    #  df_biz_count = df_biz[df_biz['County'] == county]
-     # df_biz_count = df_biz['year'] <= 2021
-    #  print(df_biz_count)
-     # print(selected_year)
 
      fig = go.Figure(
           data=[
@@ -273,14 +263,14 @@ def display_cnty_pop(clickData, selected_year):
                     x=df_rev['year'],
                     y=df_rev['tot_sales'],
                     yaxis='y',
-                    offsetgroup=1
+                    # offsetgroup=1
                ),
-               go.Bar(
+               go.Scatter(
                     name='Population',
                     x=df_county_pop['year'],
                     y=df_county_pop['totalpopulation'],
                     yaxis='y2',
-                    offsetgroup=2
+                    # offsetgroup=2
                ),
             #    go.Bar(
             #         name='Business Count',
@@ -295,50 +285,9 @@ def display_cnty_pop(clickData, selected_year):
                'yaxis2': {'title': 'Revenue', 'overlaying': 'y', 'side': 'right'}
           }
      )
-     # fig = make_subplots(specs=[[{"secondary_y":True}]])
-
-
-     # fig.add_trace(go.Bar(x=years,
-     #            y=[219, 146, 112, 127, 124, 180, 236, 207, 236, 263,
-     #               350, 430, 474, 526, 488, 537, 500, 439],
-     #            name='Rest of world',
-     #            marker_color='rgb(55, 83, 109)'
-     #            ))
-     # fig.add_trace(go.Bar(x=years,
-     #            y=[16, 13, 10, 11, 28, 37, 43, 55, 56, 88, 105, 156, 270,
-     #               299, 340, 403, 549, 499],
-     #            name='China',
-     #            marker_color='rgb(26, 118, 255)'
-     #            ))
-
-     # fig.add_trace(go.Bar(
-     #      x=df_rev['year'],
-     #      y=df_rev['tot_sales'],
-     #      name="Annual Revenue",
-     # ))
-
-     # fig.add_trace(go.Bar(
-     #      x=df_county_pop['year'],
-     #      y=df_county_pop['totalpopulation'],
-     #      name='Population',
-     # ))
-
-
-     
+    
      fig.update_layout(barmode='group')
-     # fig.show()
-
-
-     # trace1 = go.Bar(x=df_rev['tot_sales'],
-     #                 y=df_rev['year'])
-
-
-
-     # df_county_pop_range = df_county_pop[(df_county_pop['year'] >= selected_year[0]) & (df_county_pop['year'] <= selected_year[1])]
-     # print(df_county_pop_range)
-
-     # fig = px.bar(df_county_pop_range, x='year', y='totalpopulation')
-
+   
      return fig
 
 
