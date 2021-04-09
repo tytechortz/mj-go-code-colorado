@@ -68,6 +68,20 @@ def pcrev_App():
         ],
             className='row'
         ),
+        html.Div([
+            html.Div([
+                dcc.Graph(id='per-cap-rev-bar')
+            ],
+                className='six columns'
+            ),
+            # html.Div([
+            #     dcc.Graph(id='rev-scatter')
+            # ],
+            #     className='six columns'
+            # ),
+        ],
+            className='row'
+        ),
     ])
 
 app.layout = pcrev_App

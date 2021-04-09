@@ -189,7 +189,6 @@ def update_rev_map(selected_year):
 
 ######################### Per Cap Revenue #################
 
-
 @app.callback(
      Output('pcrev-map', 'figure'),
      Input('year', 'value'))         
@@ -202,13 +201,6 @@ def update_rev_map(selected_year):
                          'CENT_LON':df_year.CENT_LONG, 'marker_size':(df_year.pc_rev)*(.5**4)})
 
     df_smr_filtered = df_smr.loc[df_year['color'] == 'red']
-     
-    # df_year = df_revenue.loc[df_revenue['year'] == selected_year]
-    # print(df_year)
-    # df_smr = pd.DataFrame({'county': df_year['county'], 'year': df_year.year, 'total revenue': df_year.tot_sales,'CENT_LAT':df_year.CENT_LAT,
-    #                 'CENT_LON':df_year.CENT_LONG, 'marker_size':(df_year.tot_sales)*(.5**4)})
-
-    # df_smr_filtered = df_smr.loc[df_year['color'] == 'red']
 
     color_counties = df_smr_filtered['county'].unique().tolist()
      
