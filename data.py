@@ -3,6 +3,7 @@ import geopandas as gpd
 from sodapy import Socrata
 import json
 from datetime import datetime
+import numpy as np
 
 today = datetime.today()
 current_year = today.year
@@ -69,7 +70,7 @@ df_pc.loc[df_pc['tot_sales'] == 0, 'color'] = 'blue'
 
 #Business Data ###############################################
 df_biz = gpd.read_file('./Data/cannabis_business.geojson')
-print(df_biz)
+# print(df_biz)
 color_list = ['purple', 'darkblue', 'dodgerblue', 'darkgreen','black','lightgreen','yellow','orange', 'darkorange','red','darkred','violet']
 
 text=[]
@@ -92,6 +93,8 @@ conditions = [
     df_biz['Category'] == 'MED Licensed Retail Transporter',
     df_biz['Category'] == 'MED Licensed Retail Marijuana Store',
 ]
+
+df_biz['color'] = np.select(conditions, color_list)
 
 categories = []
 for i in df_biz['Category'].unique():

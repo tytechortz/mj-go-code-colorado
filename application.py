@@ -8,7 +8,7 @@ from homepage import Homepage
 from revenue import revenue_App
 from pcrev import pcrev_App
 from biz import biz_App
-from data import df_revenue, sources, df_rev, df_pc, df_pop, df_biz, categories_table
+from data import df_revenue, sources, df_rev, df_pc, df_pop, df_biz, categories_table, text
 import os
 from dotenv import load_dotenv
 import plotly.graph_objs as go
@@ -315,42 +315,42 @@ def display_cnty_pop(clickData, selected_year):
 
 @app.callback(
     Output('biz-map', 'figure'),
-    [Input('rev-biz-switch', 'value'),
-    Input('categories', 'value')])
-def update_figure_a(value, selected_values):
+    Input('categories', 'value'))
+def update_biz_map(selected_values):
     
-    rpd_s = rpd.sort_values(by=['RId2'])
+    # rpd_s = rpd.sort_values(by=['RId2'])
   
-    rpd_s = rpd_s.apply(pd.to_numeric, errors='ignore')
-    rpd_s = rpd_s.fillna(0)
+    # rpd_s = rpd_s.apply(pd.to_numeric, errors='ignore')
+    # rpd_s = rpd_s.fillna(0)
 
+    # data = [dict(
+    #         type = 'scattermapbox',
+    #     )]
+
+    print(df_biz)
+    # df1 = pd.DataFrame(df.loc[df['Category'] == selected_values])
+    # if selected_values == 'all':
+    # filtered_df = df
     data = [dict(
-            type = 'scattermapbox',
-        )]
-
-    df1 = pd.DataFrame(df.loc[df['Category'] == selected_values])
-    if selected_values == 'all':
-            filtered_df = df
-            data = [dict(
-                lat = df['lat'],
-                lon = df['long'],
-                text = text,
-                hoverinfo = 'text',
-                type = 'scattermapbox',
-                customdata = df['uid'],
-                marker = dict(size=10,color=df['color'],opacity=.6)
-            )]
-    else: 
-            filtered_df = df1
-            data = [dict(
-                lat = filtered_df['lat'],
-                lon = filtered_df['long'],
-                text = text,
-                hoverinfo = 'text',
-                type = 'scattermapbox',
-                customdata = df1['uid'],
-                marker = dict(size=7,color=df1['color'],opacity=.6)
-            )]
+        lat = df_biz['lat'],
+        lon = df_biz['long'],
+        text = text,
+        hoverinfo = 'text',
+        type = 'scattermapbox',
+        customdata = df_biz['uid'],
+        marker = dict(size=10,color=df_biz['color'],opacity=.6)
+    )]
+    # else: 
+    #         filtered_df = df1
+    #         data = [dict(
+    #             lat = filtered_df['lat'],
+    #             lon = filtered_df['long'],
+    #             text = text,
+    #             hoverinfo = 'text',
+    #             type = 'scattermapbox',
+    #             customdata = df1['uid'],
+    #             marker = dict(size=7,color=df1['color'],opacity=.6)
+    #         )]
     
     layout = dict(
             mapbox = dict(
@@ -360,7 +360,7 @@ def update_figure_a(value, selected_values):
                 style = 'light'
             ),
             hovermode = 'closest',
-            height = 375,
+            height = 450,
             margin = dict(r=0, l=0, t=0, b=0),
             clickmode = 'event+select'
         )  

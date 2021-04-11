@@ -84,6 +84,24 @@ def biz_App():
         ],
             className='row'
         ),
+        dcc.RadioItems(id='categories', options=[
+            {'label':'', 'value':'all'},
+            {'label':'','value':'MED Licensed Transporters'},
+            {'label':'','value':'MED Licensed Center'},
+            {'label':'','value':'MED Licensed Cultivator'},
+            {'label':'','value':'MED Licensed Infused Product Manufacturer'},
+            {'label':'','value':'MED Licensed R&D Cultivation'},
+            {'label':'','value':'MED Licensed Retail Operator'},
+            {'label':'','value':'MED Licensed Testing Facility'},
+            {'label':'','value':'MED Licensed Retail Marijuana Product Manufacturer'},
+            {'label':'','value':'MED Licensed Retail Cultivator'},
+            {'label':'','value':'MED Licensed Retail Testing Facility'},
+            {'label':'','value':'MED Licensed Retail Transporter'},
+            {'label':'','value':'MED Licensed Retail Marijuana Store'},
+        ],        
+        labelStyle={'display':'block', 'margin': 0, 'padding': 1},
+        value = 'all'
+        ),
         # html.Div([
         #     html.Div([
         #         dcc.Graph(id='per-cap-rev-bar')
