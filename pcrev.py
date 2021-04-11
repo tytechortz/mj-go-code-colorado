@@ -41,11 +41,10 @@ def pcrev_App():
                 className='eight columns'
             ),
             html.Div([
-                dcc.Markdown('''Click on counties and use year slider to see annual county
-            revenue data displayed in graphs.  Green counties have at
-            least one form of legalized cannabis, green circles show 
-            relative cannabis revenue for selected year. 
-            Select sales check boxes to display revenue graphically below.''')
+                dcc.Markdown('''Click on counties and use year slider to see annual county per capita 
+                revenue data and population and projected population growth.  Green counties have at
+                least one form of legalized cannabis, green circles show 
+                relative cannabis per capita revenue for selected year.''')
             ],
                 className='four columns'
             ),
