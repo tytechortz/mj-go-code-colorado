@@ -331,6 +331,19 @@ def update_biz_map(selected_values):
     # df1 = pd.DataFrame(df.loc[df['Category'] == selected_values])
     # if selected_values == 'all':
     # filtered_df = df
+    def fill_color():
+        for k in range(len(sources)):
+            sources[k]['features'][0]['properties']['COLOR'] = 'white'                 
+    fill_color()
+
+    layers=[dict(sourcetype = 'json',
+        source =sources[k],
+        below="water", 
+        type = 'fill',
+        color = sources[k]['features'][0]['properties']['COLOR'],
+        opacity = 0.5
+        ) for k in range(len(sources))]
+
     data = [dict(
         lat = df_biz['lat'],
         lon = df_biz['long'],
@@ -356,11 +369,13 @@ def update_biz_map(selected_values):
             mapbox = dict(
                 accesstoken = os.environ.get("mapbox_token"),
                 center = dict(lat=39, lon=-105.5),
-                zoom = 5.6,
-                style = 'light'
+                # zoom = 5.6,
+                zoom = 6,
+                style = 'light',
+                layers = layers
             ),
             hovermode = 'closest',
-            height = 450,
+            height = 500,
             margin = dict(r=0, l=0, t=0, b=0),
             clickmode = 'event+select'
         )  
