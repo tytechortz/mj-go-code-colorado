@@ -18,7 +18,7 @@ def pcrev_App():
                 ],
                     className='two columns'
                 ),
-                html.H4('Per Capita Revenue Data',
+                html.H4('Per Capita Revenue',
                 className='twelve columns',
                 style={'text-align': 'center'}
             ),
