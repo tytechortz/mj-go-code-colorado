@@ -48,7 +48,7 @@ for feat in topoJSON['features']:
         sources.append({"type": "FeatureCollection", 'features': [feat]})
 
 
-#Population data
+#Population data ##################################################
 df_pop = pd.DataFrame.from_records(pop_results)
 df_pop['totalpopulation'] = df_pop['totalpopulation'].astype(int)
 df_pop = df_pop.drop(['age', 'malepopulation', 'femalepopulation'], axis=1)
@@ -57,7 +57,7 @@ df_pop['county'] = df_pop['county'].str.upper()
 df_pop['year'] = df_pop['year'].astype(int)
 df_pop_pc = df_pop[(df_pop['year'] >= 2014) & (df_pop['year'] < current_year)]
 
-#Per capita data
+#Per capita data ##################################################
 df_rev_pc = df_revenue[(df_revenue['year'] >= 2014) & (df_revenue['year'] < current_year)]
 # print(df_rev_pc)
 df_pc = pd.merge(df_rev_pc, df_pop, how='left', left_on=['county', 'year'], right_on=['county', 'year'])
@@ -66,6 +66,42 @@ df_pc['pc_rev'] = df_pc['tot_sales'] / df_pc['totalpopulation']
 
 df_pc.loc[df_pc['tot_sales'] > 0, 'color'] = 'red'
 df_pc.loc[df_pc['tot_sales'] == 0, 'color'] = 'blue'
+
+#Business Data ###############################################
+df_biz = gpd.read_file('./Data/cannabis_business.geojson')
+print(df_biz)
+color_list = ['purple', 'darkblue', 'dodgerblue', 'darkgreen','black','lightgreen','yellow','orange', 'darkorange','red','darkred','violet']
+
+text=[]
+i=0
+while i < len(df_biz):
+    text.append(df_biz['Licensee'][i])
+    i += 1
+
+conditions = [
+    df_biz['Category'] == 'MED Licensed Transporters',
+    df_biz['Category'] == 'MED Licensed Center',
+    df_biz['Category'] == 'MED Licensed Cultivator',
+    df_biz['Category'] == 'MED Licensed Infused Product Manufacturer',
+    df_biz['Category'] == 'MED Licensed R&D Cultivation',
+    df_biz['Category'] == 'MED Licensed Retail Operator',
+    df_biz['Category'] == 'MED Licensed Testing Facility',
+    df_biz['Category'] == 'MED Licensed Retail Marijuana Product Manufacturer',
+    df_biz['Category'] == 'MED Licensed Retail Cultivator',
+    df_biz['Category'] == 'MED Licensed Retail Testing Facility',
+    df_biz['Category'] == 'MED Licensed Retail Transporter',
+    df_biz['Category'] == 'MED Licensed Retail Marijuana Store',
+]
+
+categories = []
+for i in df_biz['Category'].unique():
+    categories.append(i)
+
+categories_table = pd.DataFrame({'Category':df_biz['Category'].unique()})
+
+
+
+
 
 
 

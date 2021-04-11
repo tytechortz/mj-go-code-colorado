@@ -32,6 +32,17 @@ body = dbc.Container([
     ],
         className='row'
     ),
+    html.Div([
+        html.Div([
+            html.H4('Businesses'),
+            html.P(""" Colorado cannabis licensee locations. """),
+            dbc.Button("Click for Cannabis Businesses Page", color="primary", href="/biz"),
+        ],
+            className='twelve columns'
+        ),
+    ],
+        className='row'
+    ),
 
 ])
 

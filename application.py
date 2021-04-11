@@ -7,7 +7,7 @@ from dash.dependencies import Input, Output, State
 from homepage import Homepage
 from revenue import revenue_App
 from pcrev import pcrev_App
-from data import df_revenue, sources, df_rev, df_pc, df_pop
+from data import df_revenue, sources, df_rev, df_pc, df_pop, df_biz, categories_table
 import os
 from dotenv import load_dotenv
 import plotly.graph_objs as go
@@ -251,7 +251,7 @@ def display_cnty_pop(clickData, selected_year):
     county = clickData['points'][-1]['text']
     df_rev = df_revenue[df_revenue['county'] == county]
     df_rev = df_rev[df_rev['year'] < 2021]
-    print(df_pc)
+    # print(df_pc)
     df_pcrev = df_pc[df_pc['county'] == county]
 
     df_county_pop = df_pop[df_pop['county'] == county]
@@ -307,6 +307,63 @@ def display_cnty_pop(clickData, selected_year):
    
     return fig
 
+
+# Businesses Callbacks #####################################################
+
+@app.callback(
+    Output('biz-map', 'figure'),
+    [Input('rev-biz-switch', 'value'),
+    Input('categories', 'value')])
+def update_figure_a(value, selected_values):
+    
+    rpd_s = rpd.sort_values(by=['RId2'])
+  
+    rpd_s = rpd_s.apply(pd.to_numeric, errors='ignore')
+    rpd_s = rpd_s.fillna(0)
+
+    data = [dict(
+            type = 'scattermapbox',
+        )]
+
+    df1 = pd.DataFrame(df.loc[df['Category'] == selected_values])
+    if selected_values == 'all':
+            filtered_df = df
+            data = [dict(
+                lat = df['lat'],
+                lon = df['long'],
+                text = text,
+                hoverinfo = 'text',
+                type = 'scattermapbox',
+                customdata = df['uid'],
+                marker = dict(size=10,color=df['color'],opacity=.6)
+            )]
+    else: 
+            filtered_df = df1
+            data = [dict(
+                lat = filtered_df['lat'],
+                lon = filtered_df['long'],
+                text = text,
+                hoverinfo = 'text',
+                type = 'scattermapbox',
+                customdata = df1['uid'],
+                marker = dict(size=7,color=df1['color'],opacity=.6)
+            )]
+    
+    layout = dict(
+            mapbox = dict(
+                accesstoken = os.environ.get("mapbox_token"),
+                center = dict(lat=39, lon=-105.5),
+                zoom = 5.6,
+                style = 'light'
+            ),
+            hovermode = 'closest',
+            height = 375,
+            margin = dict(r=0, l=0, t=0, b=0),
+            clickmode = 'event+select'
+        )  
+  
+    fig = dict(data=data, layout=layout)
+    return fig
 
 
 
