@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output, State
 from homepage import Homepage
 from revenue import revenue_App
 from pcrev import pcrev_App
+from biz import biz_App
 from data import df_revenue, sources, df_rev, df_pc, df_pop, df_biz, categories_table
 import os
 from dotenv import load_dotenv
@@ -32,6 +33,8 @@ def display_page(pathname):
         return revenue_App()
     elif pathname == '/pcrev':
         return pcrev_App()
+    elif pathname == '/biz':
+        return biz_App()
     else:
         return Homepage()
 
