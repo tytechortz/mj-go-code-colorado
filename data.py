@@ -4,6 +4,7 @@ from sodapy import Socrata
 import json
 from datetime import datetime
 import numpy as np
+import config
 
 today = datetime.today()
 current_year = today.year
@@ -69,7 +70,9 @@ df_pc.loc[df_pc['tot_sales'] > 0, 'color'] = 'red'
 df_pc.loc[df_pc['tot_sales'] == 0, 'color'] = 'blue'
 
 #Business Data ###############################################
-df_biz = gpd.read_file('./Data/cannabis_business.geojson')
+# df_biz = gpd.read_file('./Data/cannabis_business.geojson')
+df_biz = pd.read_csv('./Data/CO_mj_biz_loc.csv')
+# export_csv = df_biz.to_csv(r'./New_Products.csv', index = None, header=True)
 # print(df_biz)
 color_list = ['purple', 'darkblue', 'dodgerblue', 'darkgreen','black','lightgreen','yellow','orange', 'darkorange','red','darkred','violet']
 
@@ -101,6 +104,10 @@ for i in df_biz['Category'].unique():
     categories.append(i)
 
 categories_table = pd.DataFrame({'Category':df_biz['Category'].unique()})
+
+df_bidness = pd.read_csv('https://data.colorado.gov/resource/sqs8-2un5.csv?$select=Category,License_No,Month,Year&$limit=166000&$$app_token='+ config.state_data_token)
+# print(df_bidness)
+
 
 
 
