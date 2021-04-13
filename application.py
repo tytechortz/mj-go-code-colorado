@@ -321,9 +321,9 @@ def update_lic_map(selected_year):
    
     year1 = selected_year
     
-    df_year = df_pc.loc[df_pc['year'] == selected_year]
+    df_year = df_pc.loc[df_pc['year'] == 2019]
     df_smr = pd.DataFrame({'county': df_year['county'], 'year': df_year.year, 'revenue per cap.': df_year.pc_rev,'CENT_LAT':df_year.CENT_LAT,
-                         'CENT_LON':df_year.CENT_LONG, 'marker_size':(df_year.pc_rev)*(.5**4)})
+                         'CENT_LON':df_year.CENT_LONG, 'marker_size':.5})
 
     df_smr_filtered = df_smr.loc[df_year['color'] == 'red']
 
@@ -367,6 +367,73 @@ def update_lic_map(selected_year):
     fig = dict(data=data, layout=layout)
     return fig
 
+@app.callback(
+     Output('per-lic-rev-bar', 'figure'),
+     [Input('plrev-map', 'clickData'),
+     Input('year2', 'value')])
+def display_cnty_pop(clickData, selected_year):
+    county = clickData['points'][-1]['text']
+    df_rev = df_revenue[df_revenue['county'] == county]
+    df_rev = df_rev[df_rev['year'] < 2021]
+    # print(df_pc)
+    df_pcrev = df_pc[df_pc['county'] == county]
+    print(df_pcrev)
+    # buisinesses per county
+    df_bpc = df_biz[df_biz['County'] == county]
+    print(df_bpc)
+
+    # df_county_pop = df_pop[df_pop['county'] == county]
+    # df_county_pop = df_county_pop[(df_county_pop['year'] >= selected_year[0]) & (df_county_pop['year'] <= selected_year[1])]
+
+
+    fig = go.Figure(
+        data=[
+        #    go.Bar(
+        #         name='Annual Revenue',
+        #         x=df_rev['year'],
+        #         y=df_rev['tot_sales'],
+        #         yaxis='y',
+        #         # offsetgroup=1
+        #    ),
+            go.Scatter(
+                name='Population',
+                x=df_county_pop['year'],
+                y=df_county_pop['totalpopulation'],
+                yaxis='y2',
+                # offsetgroup=2
+            ),
+            go.Bar(
+                name='Per Cap Revenue',
+                x=df_pcrev['year'],
+                y=df_pcrev['pc_rev'],
+                yaxis='y',
+                # offsetgroup=1
+            ),
+        #    go.Bar(
+        #         name='Business Count',
+        #         x=df_biz_count['year'],
+        #         y=df_biz_count['licensee'],
+        #         yaxis='y2',
+        #         offsetgroup=2
+        #    ),
+        ],
+        layout={
+            'yaxis': {'title': 'Revenue'},
+            'yaxis2': {'title': 'Population', 'overlaying': 'y', 'side': 'right'},
+            'height': 450,
+        }
+    )
+    
+    fig.update_layout(
+        barmode='group',
+        title={
+            'text':'{} COUNTY'.format(county),
+            'x':0.5,
+            'xanchor':'center'
+        }
+    )
+   
+    return fig
 
 # Businesses Callbacks #####################################################
 

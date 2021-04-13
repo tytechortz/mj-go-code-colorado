@@ -72,6 +72,8 @@ df_pc.loc[df_pc['tot_sales'] == 0, 'color'] = 'blue'
 #Business Data ###############################################
 # df_biz = gpd.read_file('./Data/cannabis_business.geojson')
 df_biz = pd.read_csv('./Data/CO_mj_biz_loc.csv')
+
+df_biz['County'] = df_biz['County'].str.upper()
 # export_csv = df_biz.to_csv(r'./New_Products.csv', index = None, header=True)
 # print(df_biz)
 color_list = ['purple', 'darkblue', 'dodgerblue', 'darkgreen','black','lightgreen','yellow','orange', 'darkorange','red','darkred','violet']
