@@ -418,7 +418,7 @@ def update_lic_map(data):
     return fig
 
 @app.callback(
-     Output('per-lic-rev-bar', 'figure'),
+     Output('pl-info', 'children'),
      [Input('plrev-map', 'clickData'),
      Input('year2', 'value')])
 def display_per_lic_rev(clickData, selected_year):
@@ -433,63 +433,12 @@ def display_per_lic_rev(clickData, selected_year):
     # buisinesses per county
     df_bpc = df_biz[df_biz['County'] == county]
     biz_count  = len(df_bpc.index)
-    # print(biz_count)
-    # df_bpc = df_bpc.drop(['geometry', 'color', 'lat', 'long', 'Certification', 'source_geo', 'Month', 'Year', 'Street_Address', 'ZIP', 'DBA'], axis=1)
-    # print(df_bpc.columns)
-    # print(df_bpc)
-
-    # df_county_pop = df_pop[df_pop['county'] == county]
-    # df_county_pop = df_county_pop[(df_county_pop['year'] >= selected_year[0]) & (df_county_pop['year'] <= selected_year[1])]
 
 
-    fig = go.Figure(
-        data=[
-        #    go.Bar(
-        #         name='Annual Revenue',
-        #         x=df_rev['year'],
-        #         y=df_rev['tot_sales'],
-        #         yaxis='y',
-        #         # offsetgroup=1
-        #    ),
-            go.Scatter(
-                name='Population',
-                x=df_county_pop['year'],
-                y=df_county_pop['totalpopulation'],
-                yaxis='y2',
-                # offsetgroup=2
-            ),
-            go.Bar(
-                name='Per Cap Revenue',
-                x=df_pcrev['year'],
-                y=df_pcrev['pc_rev'],
-                yaxis='y',
-                # offsetgroup=1
-            ),
-        #    go.Bar(
-        #         name='Business Count',
-        #         x=df_biz_count['year'],
-        #         y=df_biz_count['licensee'],
-        #         yaxis='y2',
-        #         offsetgroup=2
-        #    ),
-        ],
-        layout={
-            'yaxis': {'title': 'Revenue'},
-            'yaxis2': {'title': 'Population', 'overlaying': 'y', 'side': 'right'},
-            'height': 450,
-        }
-    )
-    
-    fig.update_layout(
-        barmode='group',
-        title={
-            'text':'{} COUNTY'.format(county),
-            'x':0.5,
-            'xanchor':'center'
-        }
-    )
-   
-    return fig
+
+    return html.Div([
+        html.H2('Stuff')
+    ])
 
 # Businesses Callbacks #####################################################
 

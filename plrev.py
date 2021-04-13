@@ -89,11 +89,11 @@ def plrev_App():
             ],
                 className='six columns'
             ),
-            # html.Div([
-            #     dcc.Graph(id='rev-scatter')
-            # ],
-            #     className='six columns'
-            # ),
+            html.Div([
+                html.Div(id='pl-info')
+            ],
+                className='six columns'
+            ),
         ],
             className='row'
         ),
