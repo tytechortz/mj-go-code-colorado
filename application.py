@@ -587,11 +587,7 @@ def update_biz_map(selected_values):
     print(df_biz.columns)
     print(df_biz['License_No'])
     df1 = pd.DataFrame(df_biz.loc[df_biz['Category'] == selected_values])
-    # rpd_s = df_biz.sort_values(by=['RId2'])
-  
-    # rpd_s = rpd_s.apply(pd.to_numeric, errors='ignore')
-    # rpd_s = rpd_s.fillna(0)
-
+   
     if selected_values == 'all':
         filtered_df = df_biz
         data = [dict(
@@ -615,14 +611,6 @@ def update_biz_map(selected_values):
             marker = dict(size=7,color=df1['color'],opacity=.6)
         )]
 
-    # data = [dict(
-    #         type = 'scattermapbox',
-    #     )]
-
-    # print(df_biz)
-    # df1 = pd.DataFrame(df.loc[df['Category'] == selected_values])
-    # if selected_values == 'all':
-    # filtered_df = df
     def fill_color():
         for k in range(len(sources)):
             sources[k]['features'][0]['properties']['COLOR'] = 'white'                 
@@ -635,27 +623,6 @@ def update_biz_map(selected_values):
         color = sources[k]['features'][0]['properties']['COLOR'],
         opacity = 0.5
         ) for k in range(len(sources))]
-
-    # data = [dict(
-    #     lat = df_biz['lat'],
-    #     lon = df_biz['long'],
-    #     text = text,
-    #     hoverinfo = 'text',
-    #     type = 'scattermapbox',
-    #     customdata = df_biz['uid'],
-    #     marker = dict(size=10,color=df_biz['color'],opacity=.6)
-    # )]
-    # else: 
-    #         filtered_df = df1
-    #         data = [dict(
-    #             lat = filtered_df['lat'],
-    #             lon = filtered_df['long'],
-    #             text = text,
-    #             hoverinfo = 'text',
-    #             type = 'scattermapbox',
-    #             customdata = df1['uid'],
-    #             marker = dict(size=7,color=df1['color'],opacity=.6)
-    #         )]
     
     layout = dict(
             mapbox = dict(

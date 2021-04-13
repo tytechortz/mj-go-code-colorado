@@ -41,9 +41,7 @@ def biz_App():
                 className='eight columns'
             ),
             html.Div([
-                dcc.Markdown('''Click on counties and use year slider to see annual county
-                revenue data displayed in graphs.  Green counties have atleast one form of legalized cannabis, green circles show relative cannabis revenue for selected year. 
-                Select sales check boxes to display revenue graphically below.'''),
+                dcc.Markdown('''Map shows markers for locations of 2019 cannabis licenses, the latest year available, color coded by license type. Select license type radio buttons to filter map.'''),
                 dcc.RadioItems(id='categories', options=[
                 {'label':'All', 'value':'all'},
                 {'label':'MED Licensed Transporters','value':'MED Licensed Transporters'},
@@ -65,73 +63,9 @@ def biz_App():
             ],
                 className='four columns'
             ),
-            # html.Div([
-                
-            # ],
-            #     className='four columns'
-            # ),
         ],
             className='row'
         ),
     ])
-        
-        # html.Div([
-            
-        
-        #     html.Div([
-                
-        #     ],
-        #         className='row'
-        #     ),
-        # ],
-        #     className='row'
-        # ],
-        # html.Div([
-        #     html.Div([
-        #         dcc.Slider(
-        #             id='year',
-        #             min=2014,
-        #             max=2020,
-        #             step=1,
-        #             marks={x: '{}'.format(x) for x in range(2014, 2021)},
-        #             value=2014
-        #         ),
-        #     ],
-        #         className='eight columns'
-        #     ),
-        # ],
-        #     className='row'
-        # ),
-        # html.Div([
-        #     html.Div([
-        #         dcc.RangeSlider(
-        #             id='year2',
-        #             min=1990,
-        #             max=2050,
-        #             step=1,
-        #             # options=[{'label':x, 'value':x} for x in range(2022, 2050)],
-        #             value=[2014,2020]
-        #         ),
-        #     ],
-        #         className='eight columns'
-        #     ),
-        # ],
-        #     className='row'
-        # ),
-        # html.Div([
-        #     html.Div([
-        #         dcc.Graph(id='per-cap-rev-bar')
-        #     ],
-        #         className='six columns'
-        #     ),
-            # html.Div([
-            #     dcc.Graph(id='rev-scatter')
-            # ],
-            #     className='six columns'
-            # ),
-        # ],
-        #     className='row'
-        # ),
-    # ])
 
 app.layout = biz_App
