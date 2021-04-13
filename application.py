@@ -319,11 +319,15 @@ def display_cnty_pop(clickData, selected_year):
     Input('year', 'value'))
 def pl_rev_data(value):
     df_year = df_pc.loc[df_pc['year'] == 2019]
+    # print(df_year)
+    # df_rank = df.year.sort_values('tot_sales')
+    # print(df_rank)
     df_cbc = df_biz.groupby(['County'], as_index=False)['License_No'].count()
     df_cbc = df_cbc.rename(columns={'License_No':'lic_count'})
     df_combo = pd.merge(df_year, df_cbc, how='left', left_on=['county'], right_on=['County'])
     df_combo['rpl'] = df_combo['tot_sales'] / df_combo['lic_count']
     df_combo.fillna(0, inplace=True)
+    # print(df_combo)
     rev_max = df_combo['rpl'].max()
     rev_min = 0
 
@@ -423,14 +427,20 @@ def update_lic_map(data):
 @app.callback(
      Output('pl-info', 'children'),
      [Input('plrev-map', 'clickData'),
-     Input('year', 'value')])
-def display_per_lic_rev(clickData, year):
+     Input('pl-data', 'children')])
+def display_per_lic_rev(clickData, pl_data):
+    df = pd.read_json(pl_data)
+    print(df)
+    df_rank = df.sort_values(by=['rpl'])
+    df_rank.reset_index(inplace=True)
+    print(df_rank)
     # print(clickData)
     county = clickData['points'][-1]['text']
     print(county)
+    # print(df_biz)
     df_rev = df_revenue[df_revenue['county'] == county]
     df_rev = df_rev[df_rev['year'] < 2021]
-    print(df_rev)
+    # print(df_rev)
     df_pcrev = df_pc[df_pc['county'] == county]
     # print(df_pcrev)
     
@@ -439,11 +449,16 @@ def display_per_lic_rev(clickData, year):
     # print(df_bpc.columns)
     biz_count  = len(df_bpc.index)
     county_2019 = df_pcrev.loc[df_pcrev['year'] == 2019]
+    # print(df_pcrev)
+    # print(county_2019)
     total_rev_2019 = int(county_2019['tot_sales'])
     rpl_2019 = int(total_rev_2019 / biz_count)
-    # print(total_rev_2019)
+    df_rank = rpl_2019.sort_values('rpl')
+    print(pl_data)
+    print(df_rank)
     county_2020 = df_rev.loc[df_rev['year'] == 2020]
     total_rev_2020 = int(county_2020['tot_sales'])
+
     
 
 
@@ -497,6 +512,20 @@ def display_per_lic_rev(clickData, year):
                         ),
                         html.Div([
                             html.H6('${:,}'.format(rpl_2019), style={'text-align': 'right'}),
+                        ],
+                            className='six columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
+                    html.Div([
+                        html.Div([
+                            html.H6('Revenue Per License Rank', style={'text-align': 'left'}),
+                        ],
+                            className='six columns'
+                        ),
+                        html.Div([
+                            html.H6('{}'.format(rpl_rank), style={'text-align': 'right'}),
                         ],
                             className='six columns'
                         ),
