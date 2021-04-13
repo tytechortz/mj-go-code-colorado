@@ -585,7 +585,7 @@ def display_per_lic_rev(clickData, pl_data):
 def update_biz_map(selected_values):
     print(df_biz)
     print(df_biz.columns)
-    print(df_biz['License_No'])
+    # print(df_biz['License_No'])
     df1 = pd.DataFrame(df_biz.loc[df_biz['Category'] == selected_values])
    
     if selected_values == 'all':
