@@ -97,6 +97,7 @@ def plrev_App():
         ],
             className='row'
         ),
+        html.Div(id='pl-data', style={'display': 'none'}),
     ])
 
 app.layout = plrev_App

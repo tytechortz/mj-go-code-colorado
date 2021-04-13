@@ -315,11 +315,80 @@ def display_cnty_pop(clickData, selected_year):
 
 # License Rev Callbacks ###############################
 @app.callback(
+    Output('pl-data', 'children'),
+    Input('year', 'value'))
+def pl_rev_data(value):
+    df_year = df_pc.loc[df_pc['year'] == 2019]
+    df_cbc = df_biz.groupby(['County'], as_index=False)['License_No'].count()
+    df_cbc = df_cbc.rename(columns={'License_No':'lic_count'})
+    df_combo = pd.merge(df_year, df_cbc, how='left', left_on=['county'], right_on=['County'])
+    df_combo['rpl'] = df_combo['tot_sales'] / df_combo['lic_count']
+    df_combo.fillna(0, inplace=True)
+    # print(df_combo)
+    rev_max = df_combo['rpl'].max()
+    rev_min = 0
+    # print(rev_max)
+    def get_color(x):
+        if x == 0:
+            return 'white'
+        elif 0 < x <= 250000 :
+            return 'palegreen'
+        elif 250000 < x <= 500000:
+            return 'lightgreen'
+        elif 500000 < x <= 1000000:
+            return 'limegreen'
+        elif 1000000 < x <= 1500000:
+            return 'forestgreen'
+        else:
+            return 'darkgreen'
+
+    df_combo['color'] = df_combo['rpl'].map(get_color)
+    # print(df_combo)
+
+    df_white_counties = df_combo.loc[df_combo['color'] == 'white']
+    # print(df_white_counties)
+    white_counties = df_white_counties['county'].unique().tolist()
+    # print(white_counties)
+    df_pg_counties = df_combo.loc[df_combo['color'] == 'palegreen']
+    pg_counties = df_pg_counties['county'].unique().tolist()
+    df_lg_counties = df_combo.loc[df_combo['color'] == 'lightgreen']
+    lg_counties = df_pg_counties['county'].unique().tolist()
+    df_lime_counties = df_combo.loc[df_combo['color'] == 'limegreen']
+    lime_counties = df_lime_counties['county'].unique().tolist()
+    df_forest_counties = df_combo.loc[df_combo['color'] == 'forestgreen']
+    forest_counties = df_forest_counties['county'].unique().tolist()
+    df_dark_counties = df_combo.loc[df_combo['color'] == 'darkgreen']
+    dark_counties = df_dark_counties['county'].unique().tolist()
+    # print(lime_counties)
+
+    def fill_color():
+        for k in range(len(sources)):
+            if sources[k]['features'][0]['properties']['COUNTY'] in white_counties:
+                sources[k]['features'][0]['properties']['COLOR'] = 'white'
+            elif sources[k]['features'][0]['properties']['COUNTY'] in pg_counties:
+                sources[k]['features'][0]['properties']['COLOR'] = 'palegreen'
+            elif sources[k]['features'][0]['properties']['COUNTY'] in lg_counties:
+                sources[k]['features'][0]['properties']['COLOR'] = 'lightgreen'
+            elif sources[k]['features'][0]['properties']['COUNTY'] in lime_counties:
+                sources[k]['features'][0]['properties']['COLOR'] = 'limegreen'
+            elif sources[k]['features'][0]['properties']['COUNTY'] in forest_counties:
+                sources[k]['features'][0]['properties']['COLOR'] = 'forestgreen'  
+            else:
+                sources[k]['features'][0]['properties']['COLOR'] = 'darkgreen'              
+    fill_color()
+    # print(df_combo)
+
+    return df_combo.to_json()
+
+
+@app.callback(
      Output('plrev-map', 'figure'),
-     Input('year', 'value'))         
-def update_lic_map(selected_year):
+     Input('pl-data', 'children'))         
+def update_lic_map(data):
+    # df = pd.read_json(data)
+    # print(df)
    
-    year1 = selected_year
+    # year1 = selected_year
     
     df_year = df_pc.loc[df_pc['year'] == 2019]
     df_smr = pd.DataFrame({'county': df_year['county'], 'year': df_year.year, 'revenue per cap.': df_year.pc_rev,'CENT_LAT':df_year.CENT_LAT,
@@ -331,18 +400,18 @@ def update_lic_map(selected_year):
 
     # df_bpc = df_biz[df_biz['County'] == county]
     # biz_count  = len(df_bpc.index)
-    df_cbc = df_biz.groupby(['County'], as_index=False)['License_No'].count()
-    df_cbc = df_cbc.rename(columns={'License_No':'lic_count'})
-    print(df_cbc)
+    # df_cbc = df_biz.groupby(['County'], as_index=False)['License_No'].count()
+    # df_cbc = df_cbc.rename(columns={'License_No':'lic_count'})
+    # print(df_cbc)
 
-    df_combo = pd.merge(df_year, df_cbc, how='left', left_on=['county'], right_on=['County'])
-    print(df_combo.columns)
-    df_combo['rpl'] = df_combo['tot_sales'] / df_combo['lic_count']
-    df_combo.fillna(0, inplace=True)
-    print(df_combo)
-    rev_max = df_combo['rpl'].max()
-    rev_min = 0
-    print(rev_max)
+    # df_combo = pd.merge(df_year, df_cbc, how='left', left_on=['county'], right_on=['County'])
+    # print(df_combo.columns)
+    # df_combo['rpl'] = df_combo['tot_sales'] / df_combo['lic_count']
+    # df_combo.fillna(0, inplace=True)
+    # print(df_combo)
+    # rev_max = df_combo['rpl'].max()
+    # rev_min = 0
+    # print(rev_max)
 
     # def discrete_colorscale(bvals, colors):
     #     if len(bvals) != len(colors)+1:
@@ -361,58 +430,58 @@ def update_lic_map(selected_year):
     # dcolorsc = discrete_colorscale(bvals, colors)
 
     # print(dcolorsc)
-    def get_color(x):
-        if x == 0:
-            return 'white'
-        elif 0 < x <= 250000 :
-            return 'palegreen'
-        elif 250000 < x <= 500000:
-            return 'lightgreen'
-        elif 500000 < x <= 1000000:
-            return 'limegreen'
-        elif 1000000 < x <= 1500000:
-            return 'forestgreen'
-        else:
-            return 'darkgreen'
+    # def get_color(x):
+    #     if x == 0:
+    #         return 'white'
+    #     elif 0 < x <= 250000 :
+    #         return 'palegreen'
+    #     elif 250000 < x <= 500000:
+    #         return 'lightgreen'
+    #     elif 500000 < x <= 1000000:
+    #         return 'limegreen'
+    #     elif 1000000 < x <= 1500000:
+    #         return 'forestgreen'
+    #     else:
+    #         return 'darkgreen'
 
     
     
-    df_combo['color'] = df_combo['rpl'].map(get_color)
-    print(df_combo)
+    # df_combo['color'] = df_combo['rpl'].map(get_color)
+    # print(df_combo)
 
-    df_white_counties = df_combo.loc[df_combo['color'] == 'white']
-    # print(df_white_counties)
-    white_counties = df_white_counties['county'].unique().tolist()
-    # print(white_counties)
-    df_pg_counties = df_combo.loc[df_combo['color'] == 'palegreen']
-    pg_counties = df_pg_counties['county'].unique().tolist()
-    df_lg_counties = df_combo.loc[df_combo['color'] == 'lightgreen']
-    lg_counties = df_pg_counties['county'].unique().tolist()
-    df_lime_counties = df_combo.loc[df_combo['color'] == 'limegreen']
-    lime_counties = df_lime_counties['county'].unique().tolist()
-    df_forest_counties = df_combo.loc[df_combo['color'] == 'forestgreen']
-    forest_counties = df_forest_counties['county'].unique().tolist()
-    df_dark_counties = df_combo.loc[df_combo['color'] == 'darkgreen']
-    dark_counties = df_dark_counties['county'].unique().tolist()
-    print(lime_counties)
+    # df_white_counties = df_combo.loc[df_combo['color'] == 'white']
+    # # print(df_white_counties)
+    # white_counties = df_white_counties['county'].unique().tolist()
+    # # print(white_counties)
+    # df_pg_counties = df_combo.loc[df_combo['color'] == 'palegreen']
+    # pg_counties = df_pg_counties['county'].unique().tolist()
+    # df_lg_counties = df_combo.loc[df_combo['color'] == 'lightgreen']
+    # lg_counties = df_pg_counties['county'].unique().tolist()
+    # df_lime_counties = df_combo.loc[df_combo['color'] == 'limegreen']
+    # lime_counties = df_lime_counties['county'].unique().tolist()
+    # df_forest_counties = df_combo.loc[df_combo['color'] == 'forestgreen']
+    # forest_counties = df_forest_counties['county'].unique().tolist()
+    # df_dark_counties = df_combo.loc[df_combo['color'] == 'darkgreen']
+    # dark_counties = df_dark_counties['county'].unique().tolist()
+    # print(lime_counties)
 
 
      
-    def fill_color():
-        for k in range(len(sources)):
-            if sources[k]['features'][0]['properties']['COUNTY'] in white_counties:
-                sources[k]['features'][0]['properties']['COLOR'] = 'white'
-            elif sources[k]['features'][0]['properties']['COUNTY'] in pg_counties:
-                sources[k]['features'][0]['properties']['COLOR'] = 'palegreen'
-            elif sources[k]['features'][0]['properties']['COUNTY'] in lg_counties:
-                sources[k]['features'][0]['properties']['COLOR'] = 'lightgreen'
-            elif sources[k]['features'][0]['properties']['COUNTY'] in lime_counties:
-                sources[k]['features'][0]['properties']['COLOR'] = 'limegreen'
-            elif sources[k]['features'][0]['properties']['COUNTY'] in forest_counties:
-                sources[k]['features'][0]['properties']['COLOR'] = 'forestgreen'  
-            else:
-                sources[k]['features'][0]['properties']['COLOR'] = 'darkgreen'              
-    fill_color()
+    # def fill_color():
+    #     for k in range(len(sources)):
+    #         if sources[k]['features'][0]['properties']['COUNTY'] in white_counties:
+    #             sources[k]['features'][0]['properties']['COLOR'] = 'white'
+    #         elif sources[k]['features'][0]['properties']['COUNTY'] in pg_counties:
+    #             sources[k]['features'][0]['properties']['COLOR'] = 'palegreen'
+    #         elif sources[k]['features'][0]['properties']['COUNTY'] in lg_counties:
+    #             sources[k]['features'][0]['properties']['COLOR'] = 'lightgreen'
+    #         elif sources[k]['features'][0]['properties']['COUNTY'] in lime_counties:
+    #             sources[k]['features'][0]['properties']['COLOR'] = 'limegreen'
+    #         elif sources[k]['features'][0]['properties']['COUNTY'] in forest_counties:
+    #             sources[k]['features'][0]['properties']['COLOR'] = 'forestgreen'  
+    #         else:
+    #             sources[k]['features'][0]['properties']['COLOR'] = 'darkgreen'              
+    # fill_color()
     
     layers=[dict(sourcetype = 'json',
         source =sources[k],
@@ -427,7 +496,7 @@ def update_lic_map(selected_year):
         text = df_smr['county'],
         hoverinfo = 'text',
         type = 'scattermapbox',
-        #    customdata = df['uid'],
+        customdata = df_smr['county'],
         marker = dict(size=df_smr['marker_size'],color='forestgreen',opacity=.5),
         )]
     layout = dict(
@@ -445,77 +514,79 @@ def update_lic_map(selected_year):
     fig = dict(data=data, layout=layout)
     return fig
 
-# @app.callback(
-#      Output('per-lic-rev-bar', 'figure'),
-#      [Input('plrev-map', 'clickData'),
-#      Input('year2', 'value')])
-# def display_cnty_pop(clickData, selected_year):
-#     county = clickData['points'][-1]['text']
-#     df_rev = df_revenue[df_revenue['county'] == county]
-#     df_rev = df_rev[df_rev['year'] < 2021]
-#     # print(df_pc)
-#     df_pcrev = df_pc[df_pc['county'] == county]
-#     print(df_pcrev)
-#     # buisinesses per county
-#     df_bpc = df_biz[df_biz['County'] == county]
-#     biz_count  = len(df_bpc.index)
-#     print(biz_count)
-#     # df_bpc = df_bpc.drop(['geometry', 'color', 'lat', 'long', 'Certification', 'source_geo', 'Month', 'Year', 'Street_Address', 'ZIP', 'DBA'], axis=1)
-#     # print(df_bpc.columns)
-#     # print(df_bpc)
+@app.callback(
+     Output('per-lic-rev-bar', 'figure'),
+     [Input('plrev-map', 'clickData'),
+     Input('year2', 'value')])
+def display_per_lic_rev(clickData, selected_year):
+    print(clickData)
+    county = clickData['points'][-1]['text']
+    print(county)
+    df_rev = df_revenue[df_revenue['county'] == county]
+    df_rev = df_rev[df_rev['year'] < 2021]
+    # print(df_pc)
+    df_pcrev = df_pc[df_pc['county'] == county]
+    # print(df_pcrev)
+    # buisinesses per county
+    df_bpc = df_biz[df_biz['County'] == county]
+    biz_count  = len(df_bpc.index)
+    # print(biz_count)
+    # df_bpc = df_bpc.drop(['geometry', 'color', 'lat', 'long', 'Certification', 'source_geo', 'Month', 'Year', 'Street_Address', 'ZIP', 'DBA'], axis=1)
+    # print(df_bpc.columns)
+    # print(df_bpc)
 
-#     # df_county_pop = df_pop[df_pop['county'] == county]
-#     # df_county_pop = df_county_pop[(df_county_pop['year'] >= selected_year[0]) & (df_county_pop['year'] <= selected_year[1])]
+    # df_county_pop = df_pop[df_pop['county'] == county]
+    # df_county_pop = df_county_pop[(df_county_pop['year'] >= selected_year[0]) & (df_county_pop['year'] <= selected_year[1])]
 
 
-#     fig = go.Figure(
-#         data=[
-#         #    go.Bar(
-#         #         name='Annual Revenue',
-#         #         x=df_rev['year'],
-#         #         y=df_rev['tot_sales'],
-#         #         yaxis='y',
-#         #         # offsetgroup=1
-#         #    ),
-#             go.Scatter(
-#                 name='Population',
-#                 x=df_county_pop['year'],
-#                 y=df_county_pop['totalpopulation'],
-#                 yaxis='y2',
-#                 # offsetgroup=2
-#             ),
-#             go.Bar(
-#                 name='Per Cap Revenue',
-#                 x=df_pcrev['year'],
-#                 y=df_pcrev['pc_rev'],
-#                 yaxis='y',
-#                 # offsetgroup=1
-#             ),
-#         #    go.Bar(
-#         #         name='Business Count',
-#         #         x=df_biz_count['year'],
-#         #         y=df_biz_count['licensee'],
-#         #         yaxis='y2',
-#         #         offsetgroup=2
-#         #    ),
-#         ],
-#         layout={
-#             'yaxis': {'title': 'Revenue'},
-#             'yaxis2': {'title': 'Population', 'overlaying': 'y', 'side': 'right'},
-#             'height': 450,
-#         }
-#     )
+    fig = go.Figure(
+        data=[
+        #    go.Bar(
+        #         name='Annual Revenue',
+        #         x=df_rev['year'],
+        #         y=df_rev['tot_sales'],
+        #         yaxis='y',
+        #         # offsetgroup=1
+        #    ),
+            go.Scatter(
+                name='Population',
+                x=df_county_pop['year'],
+                y=df_county_pop['totalpopulation'],
+                yaxis='y2',
+                # offsetgroup=2
+            ),
+            go.Bar(
+                name='Per Cap Revenue',
+                x=df_pcrev['year'],
+                y=df_pcrev['pc_rev'],
+                yaxis='y',
+                # offsetgroup=1
+            ),
+        #    go.Bar(
+        #         name='Business Count',
+        #         x=df_biz_count['year'],
+        #         y=df_biz_count['licensee'],
+        #         yaxis='y2',
+        #         offsetgroup=2
+        #    ),
+        ],
+        layout={
+            'yaxis': {'title': 'Revenue'},
+            'yaxis2': {'title': 'Population', 'overlaying': 'y', 'side': 'right'},
+            'height': 450,
+        }
+    )
     
-#     fig.update_layout(
-#         barmode='group',
-#         title={
-#             'text':'{} COUNTY'.format(county),
-#             'x':0.5,
-#             'xanchor':'center'
-#         }
-#     )
+    fig.update_layout(
+        barmode='group',
+        title={
+            'text':'{} COUNTY'.format(county),
+            'x':0.5,
+            'xanchor':'center'
+        }
+    )
    
-#     return fig
+    return fig
 
 # Businesses Callbacks #####################################################
 
