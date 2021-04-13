@@ -324,10 +324,9 @@ def pl_rev_data(value):
     df_combo = pd.merge(df_year, df_cbc, how='left', left_on=['county'], right_on=['County'])
     df_combo['rpl'] = df_combo['tot_sales'] / df_combo['lic_count']
     df_combo.fillna(0, inplace=True)
-    # print(df_combo)
     rev_max = df_combo['rpl'].max()
     rev_min = 0
-    # print(rev_max)
+
     def get_color(x):
         if x == 0:
             return 'white'
@@ -343,12 +342,9 @@ def pl_rev_data(value):
             return 'darkgreen'
 
     df_combo['color'] = df_combo['rpl'].map(get_color)
-    # print(df_combo)
 
     df_white_counties = df_combo.loc[df_combo['color'] == 'white']
-    # print(df_white_counties)
     white_counties = df_white_counties['county'].unique().tolist()
-    # print(white_counties)
     df_pg_counties = df_combo.loc[df_combo['color'] == 'palegreen']
     pg_counties = df_pg_counties['county'].unique().tolist()
     df_lg_counties = df_combo.loc[df_combo['color'] == 'lightgreen']
@@ -359,7 +355,6 @@ def pl_rev_data(value):
     forest_counties = df_forest_counties['county'].unique().tolist()
     df_dark_counties = df_combo.loc[df_combo['color'] == 'darkgreen']
     dark_counties = df_dark_counties['county'].unique().tolist()
-    # print(lime_counties)
 
     def fill_color():
         for k in range(len(sources)):
@@ -376,7 +371,6 @@ def pl_rev_data(value):
             else:
                 sources[k]['features'][0]['properties']['COLOR'] = 'darkgreen'              
     fill_color()
-    # print(df_combo)
 
     return df_combo.to_json()
 
@@ -385,103 +379,12 @@ def pl_rev_data(value):
      Output('plrev-map', 'figure'),
      Input('pl-data', 'children'))         
 def update_lic_map(data):
-    # df = pd.read_json(data)
-    # print(df)
-   
-    # year1 = selected_year
     
     df_year = df_pc.loc[df_pc['year'] == 2019]
     df_smr = pd.DataFrame({'county': df_year['county'], 'year': df_year.year, 'revenue per cap.': df_year.pc_rev,'CENT_LAT':df_year.CENT_LAT,
                          'CENT_LON':df_year.CENT_LONG, 'marker_size':.5})
 
     df_smr_filtered = df_smr.loc[df_year['color'] == 'red']
-
-    # color_counties = df_smr_filtered['county'].unique().tolist()
-
-    # df_bpc = df_biz[df_biz['County'] == county]
-    # biz_count  = len(df_bpc.index)
-    # df_cbc = df_biz.groupby(['County'], as_index=False)['License_No'].count()
-    # df_cbc = df_cbc.rename(columns={'License_No':'lic_count'})
-    # print(df_cbc)
-
-    # df_combo = pd.merge(df_year, df_cbc, how='left', left_on=['county'], right_on=['County'])
-    # print(df_combo.columns)
-    # df_combo['rpl'] = df_combo['tot_sales'] / df_combo['lic_count']
-    # df_combo.fillna(0, inplace=True)
-    # print(df_combo)
-    # rev_max = df_combo['rpl'].max()
-    # rev_min = 0
-    # print(rev_max)
-
-    # def discrete_colorscale(bvals, colors):
-    #     if len(bvals) != len(colors)+1:
-    #         raise ValueError('len(boundary values) should be equal to  len(colors)+1')
-    #     bvals = sorted(bvals)     
-    #     nvals = [(v-bvals[0])/(bvals[-1]-bvals[0]) for v in bvals]  #normalized values
-    
-    #     dcolorscale = [] #discrete colorscale
-    #     for k in range(len(colors)):
-    #         dcolorscale.extend([[nvals[k], colors[k]], [nvals[k+1], colors[k]]])
-    #     return dcolorscale    
-
-    # bvals = [1, 250000, 500000, 750000, 1000000, 1250000, 1500000]
-    # colors = ['#98FB98', '#00FF7F', '#7CFC00', '#32CD32', '#228B22', '#006400']
-
-    # dcolorsc = discrete_colorscale(bvals, colors)
-
-    # print(dcolorsc)
-    # def get_color(x):
-    #     if x == 0:
-    #         return 'white'
-    #     elif 0 < x <= 250000 :
-    #         return 'palegreen'
-    #     elif 250000 < x <= 500000:
-    #         return 'lightgreen'
-    #     elif 500000 < x <= 1000000:
-    #         return 'limegreen'
-    #     elif 1000000 < x <= 1500000:
-    #         return 'forestgreen'
-    #     else:
-    #         return 'darkgreen'
-
-    
-    
-    # df_combo['color'] = df_combo['rpl'].map(get_color)
-    # print(df_combo)
-
-    # df_white_counties = df_combo.loc[df_combo['color'] == 'white']
-    # # print(df_white_counties)
-    # white_counties = df_white_counties['county'].unique().tolist()
-    # # print(white_counties)
-    # df_pg_counties = df_combo.loc[df_combo['color'] == 'palegreen']
-    # pg_counties = df_pg_counties['county'].unique().tolist()
-    # df_lg_counties = df_combo.loc[df_combo['color'] == 'lightgreen']
-    # lg_counties = df_pg_counties['county'].unique().tolist()
-    # df_lime_counties = df_combo.loc[df_combo['color'] == 'limegreen']
-    # lime_counties = df_lime_counties['county'].unique().tolist()
-    # df_forest_counties = df_combo.loc[df_combo['color'] == 'forestgreen']
-    # forest_counties = df_forest_counties['county'].unique().tolist()
-    # df_dark_counties = df_combo.loc[df_combo['color'] == 'darkgreen']
-    # dark_counties = df_dark_counties['county'].unique().tolist()
-    # print(lime_counties)
-
-
-     
-    # def fill_color():
-    #     for k in range(len(sources)):
-    #         if sources[k]['features'][0]['properties']['COUNTY'] in white_counties:
-    #             sources[k]['features'][0]['properties']['COLOR'] = 'white'
-    #         elif sources[k]['features'][0]['properties']['COUNTY'] in pg_counties:
-    #             sources[k]['features'][0]['properties']['COLOR'] = 'palegreen'
-    #         elif sources[k]['features'][0]['properties']['COUNTY'] in lg_counties:
-    #             sources[k]['features'][0]['properties']['COLOR'] = 'lightgreen'
-    #         elif sources[k]['features'][0]['properties']['COUNTY'] in lime_counties:
-    #             sources[k]['features'][0]['properties']['COLOR'] = 'limegreen'
-    #         elif sources[k]['features'][0]['properties']['COUNTY'] in forest_counties:
-    #             sources[k]['features'][0]['properties']['COLOR'] = 'forestgreen'  
-    #         else:
-    #             sources[k]['features'][0]['properties']['COLOR'] = 'darkgreen'              
-    # fill_color()
     
     layers=[dict(sourcetype = 'json',
         source =sources[k],
