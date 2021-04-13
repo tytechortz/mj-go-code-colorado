@@ -33,6 +33,8 @@ def display_page(pathname):
         return revenue_App()
     elif pathname == '/pcrev':
         return pcrev_App()
+    elif pathname == '/plrev':
+        return pcrev_App()
     elif pathname == '/biz':
         return biz_App()
     else:
@@ -318,6 +320,8 @@ def display_cnty_pop(clickData, selected_year):
     Input('categories', 'value'))
 def update_biz_map(selected_values):
     print(df_biz)
+    print(df_biz.columns)
+    print(df_biz['License_No'])
     # rpd_s = rpd.sort_values(by=['RId2'])
   
     # rpd_s = rpd_s.apply(pd.to_numeric, errors='ignore')
