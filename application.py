@@ -464,8 +464,22 @@ def display_per_lic_rev(clickData, selected_year):
                     ],
                         className='row'
                     ),
+                    html.Div([
+                        html.Div([
+                            html.H6('2019 License Count'),
+                        ],
+                            className='six columns'
+                        ),
+                        html.Div([
+                            html.H6('{}'.format(biz_count), style={'text-align': 'right'}),
+                        ],
+                            className='six columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
             
-                    html.H6('2019 License Count'),
+                    
                 ],
                     className='round1'
                 ),
