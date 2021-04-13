@@ -430,12 +430,14 @@ def update_lic_map(data):
      Input('pl-data', 'children')])
 def display_per_lic_rev(clickData, pl_data):
     df = pd.read_json(pl_data)
+    county = clickData['points'][-1]['text']
     print(df)
-    df_rank = df.sort_values(by=['rpl'])
+    df_rank = df.sort_values(by=['rpl'], ascending=False)
     df_rank.reset_index(inplace=True)
     print(df_rank)
-    # print(clickData)
-    county = clickData['points'][-1]['text']
+    rpl_rank_2019 = df_rank[df_rank['county'] == county].index[0] + 1
+    print(rpl_rank_2019)
+    
     print(county)
     # print(df_biz)
     df_rev = df_revenue[df_revenue['county'] == county]
@@ -453,9 +455,9 @@ def display_per_lic_rev(clickData, pl_data):
     # print(county_2019)
     total_rev_2019 = int(county_2019['tot_sales'])
     rpl_2019 = int(total_rev_2019 / biz_count)
-    df_rank = rpl_2019.sort_values('rpl')
-    print(pl_data)
-    print(df_rank)
+    # df_rank = rpl_2019.sort_values('rpl')
+    # print(pl_data)
+    # print(df_rank)
     county_2020 = df_rev.loc[df_rev['year'] == 2020]
     total_rev_2020 = int(county_2020['tot_sales'])
 
@@ -525,7 +527,7 @@ def display_per_lic_rev(clickData, pl_data):
                             className='six columns'
                         ),
                         html.Div([
-                            html.H6('{}'.format(rpl_rank), style={'text-align': 'right'}),
+                            html.H6('{}'.format(rpl_rank_2019), style={'text-align': 'right'}),
                         ],
                             className='six columns'
                         ),
