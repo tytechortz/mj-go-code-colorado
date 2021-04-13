@@ -460,6 +460,8 @@ def display_per_lic_rev(clickData, pl_data):
     # print(df_rank)
     county_2020 = df_rev.loc[df_rev['year'] == 2020]
     total_rev_2020 = int(county_2020['tot_sales'])
+    rev_change = (total_rev_2020 - total_rev_2019) / total_rev_2019
+    print(rev_change)
 
     
 
@@ -542,6 +544,20 @@ def display_per_lic_rev(clickData, pl_data):
                         ),
                         html.Div([
                             html.H6('${:,}'.format(total_rev_2020), style={'text-align': 'right'}),
+                        ],
+                            className='six columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
+                    html.Div([
+                        html.Div([
+                            html.H6('Revenue Change 2019 to 2020'),
+                        ],
+                            className='six columns'
+                        ),
+                        html.Div([
+                            html.H6('{:.0%}'.format(rev_change), style={'text-align': 'right'}),
                         ],
                             className='six columns'
                         ),
