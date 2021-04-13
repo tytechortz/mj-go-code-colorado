@@ -420,20 +420,25 @@ def update_lic_map(data):
 @app.callback(
      Output('pl-info', 'children'),
      [Input('plrev-map', 'clickData'),
-     Input('year2', 'value')])
-def display_per_lic_rev(clickData, selected_year):
-    print(clickData)
+     Input('year', 'value')])
+def display_per_lic_rev(clickData, year):
+    # print(clickData)
     county = clickData['points'][-1]['text']
     print(county)
     df_rev = df_revenue[df_revenue['county'] == county]
     df_rev = df_rev[df_rev['year'] < 2021]
     # print(df_pc)
     df_pcrev = df_pc[df_pc['county'] == county]
-    # print(df_pcrev)
+    print(df_pcrev)
+    
     # buisinesses per county
     df_bpc = df_biz[df_biz['County'] == county]
+    print(df_bpc.columns)
     biz_count  = len(df_bpc.index)
-    total_rev_2019 = 123453
+    county_2019 = df_pcrev.loc[df_pcrev['year'] == 2019]
+    total_rev_2019 = int(county_2019['tot_sales'])
+    print(total_rev_2019)
+    
 
 
 
