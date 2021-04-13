@@ -327,7 +327,17 @@ def update_lic_map(selected_year):
 
     df_smr_filtered = df_smr.loc[df_year['color'] == 'red']
 
-    color_counties = df_smr_filtered['county'].unique().tolist()
+    # color_counties = df_smr_filtered['county'].unique().tolist()
+
+    # df_bpc = df_biz[df_biz['County'] == county]
+    # biz_count  = len(df_bpc.index)
+    df_cbc = df_biz.groupby(['County'], as_index=False)['License_No'].count()
+    print(df_cbc)
+
+    df_combo = pd.merge(df_year, df_biz, how='left', left_on=['county'], right_on=['County'])
+    print(df_combo.columns)
+
+
      
     def fill_color():
         for k in range(len(sources)):
