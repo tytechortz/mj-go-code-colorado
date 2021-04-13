@@ -343,7 +343,7 @@ def pl_rev_data(value):
 
     df_combo['color'] = df_combo['rpl'].map(get_color)
     pd.set_option('display.max_rows', None)
-    print(df_combo)
+    # print(df_combo)
 
     df_white_counties = df_combo.loc[df_combo['color'] == 'white']
     white_counties = df_white_counties['county'].unique().tolist()
@@ -357,7 +357,7 @@ def pl_rev_data(value):
     forest_counties = df_forest_counties['county'].unique().tolist()
     df_dark_counties = df_combo.loc[df_combo['color'] == 'darkgreen']
     dark_counties = df_dark_counties['county'].unique().tolist()
-    print(lg_counties)
+    # print(lg_counties)
 
     def fill_color():
         for k in range(len(sources)):
@@ -430,7 +430,7 @@ def display_per_lic_rev(clickData, year):
     print(county)
     df_rev = df_revenue[df_revenue['county'] == county]
     df_rev = df_rev[df_rev['year'] < 2021]
-    # print(df_pc)
+    print(df_rev)
     df_pcrev = df_pc[df_pc['county'] == county]
     # print(df_pcrev)
     
@@ -442,6 +442,8 @@ def display_per_lic_rev(clickData, year):
     total_rev_2019 = int(county_2019['tot_sales'])
     rpl_2019 = int(total_rev_2019 / biz_count)
     # print(total_rev_2019)
+    county_2020 = df_rev.loc[df_rev['year'] == 2020]
+    total_rev_2020 = int(county_2020['tot_sales'])
     
 
 
@@ -501,7 +503,20 @@ def display_per_lic_rev(clickData, year):
                     ],
                         className='row'
                     ),
-                    
+                    html.Div([
+                        html.Div([
+                            html.H6('Total Revenue in 2020'),
+                        ],
+                            className='six columns'
+                        ),
+                        html.Div([
+                            html.H6('${:,}'.format(total_rev_2020), style={'text-align': 'right'}),
+                        ],
+                            className='six columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
                 ],
                     className='round1'
                 ),
