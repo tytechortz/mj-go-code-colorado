@@ -41,48 +41,45 @@ def plrev_App():
                 className='eight columns'
             ),
             html.Div([
-                dcc.Markdown('''Click on counties and use year slider to see annual county per license 
-                revenue data and population and projected population growth.  Green counties have at
-                least one form of legalized cannabis, green circles show 
-                relative cannabis per capita revenue for selected year.''')
+                dcc.Markdown('''Click on counties to show revenue, license count, revenue per license, county ranking, and revenue change from 2019 to 2020. Counties are shaded to indicate realative revenue per license, with darker shades representing higher values. 2019 is the most recent year for license information''')
             ],
                 className='four columns'
             ),
         ],
             className='row'
         ),
-        html.Div([
-            html.Div([
-                dcc.Slider(
-                    id='year',
-                    min=2014,
-                    max=2020,
-                    step=1,
-                    marks={x: '{}'.format(x) for x in range(2014, 2021)},
-                    value=2014
-                ),
-            ],
-                className='eight columns'
-            ),
-        ],
-            className='row'
-        ),
-        html.Div([
-            html.Div([
-                dcc.RangeSlider(
-                    id='year2',
-                    min=1990,
-                    max=2050,
-                    step=1,
-                    # options=[{'label':x, 'value':x} for x in range(2022, 2050)],
-                    value=[2014,2020]
-                ),
-            ],
-                className='eight columns'
-            ),
-        ],
-            className='row'
-        ),
+        # html.Div([
+        #     html.Div([
+        #         dcc.Slider(
+        #             id='year',
+        #             min=2014,
+        #             max=2020,
+        #             step=1,
+        #             marks={x: '{}'.format(x) for x in range(2014, 2021)},
+        #             value=2014
+        #         ),
+        #     ],
+        #         className='eight columns'
+        #     ),
+        # ],
+        #     className='row'
+        # ),
+        # html.Div([
+        #     html.Div([
+        #         dcc.RangeSlider(
+        #             id='year2',
+        #             min=1990,
+        #             max=2050,
+        #             step=1,
+        #             # options=[{'label':x, 'value':x} for x in range(2022, 2050)],
+        #             value=[2014,2020]
+        #         ),
+        #     ],
+        #         className='eight columns'
+        #     ),
+        # ],
+        #     className='row'
+        # ),
         html.Div([
             html.Div([
                 html.Div(id='pl-info')

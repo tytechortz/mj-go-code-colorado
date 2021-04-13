@@ -316,7 +316,7 @@ def display_cnty_pop(clickData, selected_year):
 # License Rev Callbacks ###############################
 @app.callback(
     Output('pl-data', 'children'),
-    Input('year', 'value'))
+    Input('pl-data', 'children'))
 def pl_rev_data(value):
     df_year = df_pc.loc[df_pc['year'] == 2019]
     # print(df_year)
