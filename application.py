@@ -331,7 +331,7 @@ def pl_rev_data(value):
         if x == 0:
             return 'white'
         elif 0 < x <= 250000 :
-            return 'palegreen'
+            return 'greenyellow'
         elif 250000 < x <= 500000:
             return 'lightgreen'
         elif 500000 < x <= 1000000:
@@ -342,26 +342,29 @@ def pl_rev_data(value):
             return 'darkgreen'
 
     df_combo['color'] = df_combo['rpl'].map(get_color)
+    pd.set_option('display.max_rows', None)
+    print(df_combo)
 
     df_white_counties = df_combo.loc[df_combo['color'] == 'white']
     white_counties = df_white_counties['county'].unique().tolist()
-    df_pg_counties = df_combo.loc[df_combo['color'] == 'palegreen']
-    pg_counties = df_pg_counties['county'].unique().tolist()
+    df_gy_counties = df_combo.loc[df_combo['color'] == 'greenyellow']
+    pg_counties = df_gy_counties['county'].unique().tolist()
     df_lg_counties = df_combo.loc[df_combo['color'] == 'lightgreen']
-    lg_counties = df_pg_counties['county'].unique().tolist()
+    lg_counties = df_lg_counties['county'].unique().tolist()
     df_lime_counties = df_combo.loc[df_combo['color'] == 'limegreen']
     lime_counties = df_lime_counties['county'].unique().tolist()
     df_forest_counties = df_combo.loc[df_combo['color'] == 'forestgreen']
     forest_counties = df_forest_counties['county'].unique().tolist()
     df_dark_counties = df_combo.loc[df_combo['color'] == 'darkgreen']
     dark_counties = df_dark_counties['county'].unique().tolist()
+    print(lg_counties)
 
     def fill_color():
         for k in range(len(sources)):
             if sources[k]['features'][0]['properties']['COUNTY'] in white_counties:
                 sources[k]['features'][0]['properties']['COLOR'] = 'white'
             elif sources[k]['features'][0]['properties']['COUNTY'] in pg_counties:
-                sources[k]['features'][0]['properties']['COLOR'] = 'palegreen'
+                sources[k]['features'][0]['properties']['COLOR'] = 'greenyellow'
             elif sources[k]['features'][0]['properties']['COUNTY'] in lg_counties:
                 sources[k]['features'][0]['properties']['COLOR'] = 'lightgreen'
             elif sources[k]['features'][0]['properties']['COUNTY'] in lime_counties:
@@ -429,15 +432,16 @@ def display_per_lic_rev(clickData, year):
     df_rev = df_rev[df_rev['year'] < 2021]
     # print(df_pc)
     df_pcrev = df_pc[df_pc['county'] == county]
-    print(df_pcrev)
+    # print(df_pcrev)
     
     # buisinesses per county
     df_bpc = df_biz[df_biz['County'] == county]
-    print(df_bpc.columns)
+    # print(df_bpc.columns)
     biz_count  = len(df_bpc.index)
     county_2019 = df_pcrev.loc[df_pcrev['year'] == 2019]
     total_rev_2019 = int(county_2019['tot_sales'])
-    print(total_rev_2019)
+    rpl_2019 = int(total_rev_2019 / biz_count)
+    # print(total_rev_2019)
     
 
 
@@ -483,7 +487,20 @@ def display_per_lic_rev(clickData, year):
                     ],
                         className='row'
                     ),
-            
+                    html.Div([
+                        html.Div([
+                            html.H6('Revenue Per License', style={'text-align': 'left'}),
+                        ],
+                            className='six columns'
+                        ),
+                        html.Div([
+                            html.H6('${:,}'.format(rpl_2019), style={'text-align': 'right'}),
+                        ],
+                            className='six columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
                     
                 ],
                     className='round1'
