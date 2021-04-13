@@ -433,12 +433,22 @@ def display_per_lic_rev(clickData, selected_year):
     # buisinesses per county
     df_bpc = df_biz[df_biz['County'] == county]
     biz_count  = len(df_bpc.index)
+    total_rev_2019 = 123453
 
 
 
     return html.Div([
-        html.H2('Stuff')
-    ])
+        html.Div([
+            html.H6('{} COUNTY'.format(county), style={'text-align': 'center'}),
+            html.H6('${:,} Total Revenue in 2019'.format(total_rev_2019)),
+            html.H6('{} Licenses'.format(biz_count)),
+            
+        ],
+            className='twelve columns'
+        ),
+    ],
+        className='row'
+    ),
 
 # Businesses Callbacks #####################################################
 

@@ -85,11 +85,6 @@ def plrev_App():
         ),
         html.Div([
             html.Div([
-                dcc.Graph(id='per-lic-rev-bar')
-            ],
-                className='six columns'
-            ),
-            html.Div([
                 html.Div(id='pl-info')
             ],
                 className='six columns'
