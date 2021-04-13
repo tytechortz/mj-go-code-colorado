@@ -380,7 +380,11 @@ def display_cnty_pop(clickData, selected_year):
     print(df_pcrev)
     # buisinesses per county
     df_bpc = df_biz[df_biz['County'] == county]
-    print(df_bpc)
+    biz_count  = len(df_bpc.index)
+    print(biz_count)
+    # df_bpc = df_bpc.drop(['geometry', 'color', 'lat', 'long', 'Certification', 'source_geo', 'Month', 'Year', 'Street_Address', 'ZIP', 'DBA'], axis=1)
+    # print(df_bpc.columns)
+    # print(df_bpc)
 
     # df_county_pop = df_pop[df_pop['county'] == county]
     # df_county_pop = df_county_pop[(df_county_pop['year'] >= selected_year[0]) & (df_county_pop['year'] <= selected_year[1])]
