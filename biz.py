@@ -82,6 +82,15 @@ def biz_App():
         ],
             className='row'
         ),
+        html.Div([
+            html.Div([
+                dcc.Graph(id='biz-bar')
+            ],
+                className='six columns'
+            ),
+        ],
+            className='row'
+        ),
     ])
 
 app.layout = biz_App

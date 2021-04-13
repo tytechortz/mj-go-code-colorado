@@ -642,6 +642,30 @@ def update_biz_map(selected_values):
     fig = dict(data=data, layout=layout)
     return fig
 
+@app.callback(
+    Output('biz-bar', 'figure'),
+    Input('year', 'value'))
+def create_rev_bar(year):
+    biz_year = df_biz.loc[df_biz['Year'] == year]
+    biz_year_dec = biz_year[biz_year['Month'] == 12]
+
+    biz_type = biz_year_dec.groupby('Category')['License_No'].nunique()
+    biz_count = pd.DataFrame({'Category':biz_type.index, 'Value':biz_type.values})
+   
+    trace1 = [
+        {'y': biz_count['Category'], 'x': biz_count['Value'], 'type': 'bar','orientation':'h','name': '' },
+    ]
+    
+    return {
+        'data': trace1,
+        'layout': go.Layout(
+            height = 400,
+            yaxis = go.layout.YAxis(
+                automargin = True,
+            ),
+            title = 'License Count for {}'.format(year)
+        ),
+    } 
 
 
 if __name__ == '__main__':
