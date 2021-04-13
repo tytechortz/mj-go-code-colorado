@@ -18,7 +18,7 @@ def plrev_App():
                 ],
                     className='two columns'
                 ),
-                html.H4('Per Capita Revenue',
+                html.H4('Per License Revenue',
                 className='twelve columns',
                 style={'text-align': 'center'}
             ),
@@ -33,7 +33,7 @@ def plrev_App():
         html.Div([
             html.Div([
                 html.Div([
-                    dcc.Graph('pcrev-map')
+                    dcc.Graph('plrev-map')
                 ],
                     className='twelve columns'
                 ),
@@ -41,7 +41,7 @@ def plrev_App():
                 className='eight columns'
             ),
             html.Div([
-                dcc.Markdown('''Click on counties and use year slider to see annual county per capita 
+                dcc.Markdown('''Click on counties and use year slider to see annual county per license 
                 revenue data and population and projected population growth.  Green counties have at
                 least one form of legalized cannabis, green circles show 
                 relative cannabis per capita revenue for selected year.''')
@@ -85,7 +85,7 @@ def plrev_App():
         ),
         html.Div([
             html.Div([
-                dcc.Graph(id='per-cap-rev-bar')
+                dcc.Graph(id='per-lic-rev-bar')
             ],
                 className='six columns'
             ),
