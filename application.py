@@ -439,10 +439,39 @@ def display_per_lic_rev(clickData, selected_year):
 
     return html.Div([
         html.Div([
-            html.H6('{} COUNTY'.format(county), style={'text-align': 'center'}),
-            html.H6('${:,} Total Revenue in 2019'.format(total_rev_2019)),
-            html.H6('{} Licenses'.format(biz_count)),
+            html.Div([
+                html.Div([
+                    html.Div([
+                        html.Div([
+                            html.H6('{} COUNTY'.format(county), style={'text-align': 'center'}),
+                        ],
+                            className='twelve columns'
+                        ),
+                    ],
+                        className=('row')
+                    ),
+                    html.Div([
+                        html.Div([
+                            html.H6('Total Revenue in 2019'),
+                        ],
+                            className='six columns'
+                        ),
+                        html.Div([
+                            html.H6('${:,}'.format(total_rev_2019), style={'text-align': 'right'}),
+                        ],
+                            className='six columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
             
+                    html.H6('2019 License Count'),
+                ],
+                    className='round1'
+                ),
+            ],
+                className='pretty_container'
+            ),
         ],
             className='twelve columns'
         ),
