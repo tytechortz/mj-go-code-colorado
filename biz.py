@@ -42,66 +42,82 @@ def biz_App():
             ),
             html.Div([
                 dcc.Markdown('''Click on counties and use year slider to see annual county
-            revenue data displayed in graphs.  Green counties have at
-            least one form of legalized cannabis, green circles show 
-            relative cannabis revenue for selected year. 
-            Select sales check boxes to display revenue graphically below.''')
+                revenue data displayed in graphs.  Green counties have atleast one form of legalized cannabis, green circles show relative cannabis revenue for selected year. 
+                Select sales check boxes to display revenue graphically below.'''),
+                dcc.RadioItems(id='categories', options=[
+                {'label':'All', 'value':'all'},
+                {'label':'MED Licensed Transporters','value':'MED Licensed Transporters'},
+                {'label':'MED Licensed Center','value':'MED Licensed Center'},
+                {'label':'MED Licensed Cultivator','value':'MED Licensed Cultivator'},
+                {'label':'MED Licensed Infused Product Manufacturer','value':'MED Licensed Infused Product Manufacturer'},
+                {'label':'MED Licensed R&D Cultivation','value':'MED Licensed R&D Cultivation'},
+                {'label':'MED Licensed Retail Operator','value':'MED Licensed Retail Operator'},
+                {'label':'MED Licensed Testing Facility','value':'MED Licensed Testing Facility'},
+                {'label':'MED Licensed Retail Marijuana Product Manufacturer','value':'MED Licensed Retail Marijuana Product Manufacturer'},
+                {'label':'MED Licensed Retail Cultivator','value':'MED Licensed Retail Cultivator'},
+                {'label':'MED Licensed Retail Testing Facility','value':'MED Licensed Retail Testing Facility'},
+                {'label':'MED Licensed Retail Transporter','value':'MED Licensed Retail Transporter'},
+                {'label':'MED Licensed Retail Marijuana Store','value':'MED Licensed Retail Marijuana Store'},
+                ],        
+                labelStyle={'display':'block', 'margin': 0, 'padding': 1},
+                value = 'all'
+                ),
             ],
                 className='four columns'
             ),
+            # html.Div([
+                
+            # ],
+            #     className='four columns'
+            # ),
         ],
             className='row'
         ),
-        html.Div([
-            html.Div([
-                dcc.Slider(
-                    id='year',
-                    min=2014,
-                    max=2020,
-                    step=1,
-                    marks={x: '{}'.format(x) for x in range(2014, 2021)},
-                    value=2014
-                ),
-            ],
-                className='eight columns'
-            ),
-        ],
-            className='row'
-        ),
-        html.Div([
-            html.Div([
-                dcc.RangeSlider(
-                    id='year2',
-                    min=1990,
-                    max=2050,
-                    step=1,
-                    # options=[{'label':x, 'value':x} for x in range(2022, 2050)],
-                    value=[2014,2020]
-                ),
-            ],
-                className='eight columns'
-            ),
-        ],
-            className='row'
-        ),
-        dcc.RadioItems(id='categories', options=[
-            {'label':'', 'value':'all'},
-            {'label':'','value':'MED Licensed Transporters'},
-            {'label':'','value':'MED Licensed Center'},
-            {'label':'','value':'MED Licensed Cultivator'},
-            {'label':'','value':'MED Licensed Infused Product Manufacturer'},
-            {'label':'','value':'MED Licensed R&D Cultivation'},
-            {'label':'','value':'MED Licensed Retail Operator'},
-            {'label':'','value':'MED Licensed Testing Facility'},
-            {'label':'','value':'MED Licensed Retail Marijuana Product Manufacturer'},
-            {'label':'','value':'MED Licensed Retail Cultivator'},
-            {'label':'','value':'MED Licensed Retail Testing Facility'},
-            {'label':'','value':'MED Licensed Retail Transporter'},
-            {'label':'','value':'MED Licensed Retail Marijuana Store'},
-        ],        
-        labelStyle={'display':'block', 'margin': 0, 'padding': 1},
-        value = 'all'
-        ),
+    ])
+        
+        # html.Div([
+            
+        
+        #     html.Div([
+                
+        #     ],
+        #         className='row'
+        #     ),
+        # ],
+        #     className='row'
+        # ],
+        # html.Div([
+        #     html.Div([
+        #         dcc.Slider(
+        #             id='year',
+        #             min=2014,
+        #             max=2020,
+        #             step=1,
+        #             marks={x: '{}'.format(x) for x in range(2014, 2021)},
+        #             value=2014
+        #         ),
+        #     ],
+        #         className='eight columns'
+        #     ),
+        # ],
+        #     className='row'
+        # ),
+        # html.Div([
+        #     html.Div([
+        #         dcc.RangeSlider(
+        #             id='year2',
+        #             min=1990,
+        #             max=2050,
+        #             step=1,
+        #             # options=[{'label':x, 'value':x} for x in range(2022, 2050)],
+        #             value=[2014,2020]
+        #         ),
+        #     ],
+        #         className='eight columns'
+        #     ),
+        # ],
+        #     className='row'
+        # ),
         # html.Div([
         #     html.Div([
         #         dcc.Graph(id='per-cap-rev-bar')
@@ -116,6 +132,6 @@ def biz_App():
         # ],
         #     className='row'
         # ),
-    ])
+    # ])
 
 app.layout = biz_App

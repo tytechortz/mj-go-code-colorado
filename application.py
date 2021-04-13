@@ -431,14 +431,14 @@ def update_lic_map(data):
 def display_per_lic_rev(clickData, pl_data):
     df = pd.read_json(pl_data)
     county = clickData['points'][-1]['text']
-    print(df)
+    # print(df)
     df_rank = df.sort_values(by=['rpl'], ascending=False)
     df_rank.reset_index(inplace=True)
-    print(df_rank)
+    # print(df_rank)
     rpl_rank_2019 = df_rank[df_rank['county'] == county].index[0] + 1
-    print(rpl_rank_2019)
+    # print(rpl_rank_2019)
     
-    print(county)
+    # print(county)
     # print(df_biz)
     df_rev = df_revenue[df_revenue['county'] == county]
     df_rev = df_rev[df_rev['year'] < 2021]
@@ -461,7 +461,7 @@ def display_per_lic_rev(clickData, pl_data):
     county_2020 = df_rev.loc[df_rev['year'] == 2020]
     total_rev_2020 = int(county_2020['tot_sales'])
     rev_change = (total_rev_2020 - total_rev_2019) / total_rev_2019
-    print(rev_change)
+    # print(rev_change)
 
     
 
@@ -586,10 +586,34 @@ def update_biz_map(selected_values):
     print(df_biz)
     print(df_biz.columns)
     print(df_biz['License_No'])
-    # rpd_s = rpd.sort_values(by=['RId2'])
+    df1 = pd.DataFrame(df_biz.loc[df_biz['Category'] == selected_values])
+    # rpd_s = df_biz.sort_values(by=['RId2'])
   
     # rpd_s = rpd_s.apply(pd.to_numeric, errors='ignore')
     # rpd_s = rpd_s.fillna(0)
+
+    if selected_values == 'all':
+        filtered_df = df_biz
+        data = [dict(
+            lat = df_biz['lat'],
+            lon = df_biz['long'],
+            text = text,
+            hoverinfo = 'text',
+            type = 'scattermapbox',
+            customdata = df_biz['uid'],
+            marker = dict(size=10,color=df_biz['color'],opacity=.6)
+        )]
+    else: 
+        filtered_df = df1
+        data = [dict(
+            lat = filtered_df['lat'],
+            lon = filtered_df['long'],
+            text = text,
+            hoverinfo = 'text',
+            type = 'scattermapbox',
+            customdata = df1['uid'],
+            marker = dict(size=7,color=df1['color'],opacity=.6)
+        )]
 
     # data = [dict(
     #         type = 'scattermapbox',
@@ -612,15 +636,15 @@ def update_biz_map(selected_values):
         opacity = 0.5
         ) for k in range(len(sources))]
 
-    data = [dict(
-        lat = df_biz['lat'],
-        lon = df_biz['long'],
-        text = text,
-        hoverinfo = 'text',
-        type = 'scattermapbox',
-        customdata = df_biz['uid'],
-        marker = dict(size=10,color=df_biz['color'],opacity=.6)
-    )]
+    # data = [dict(
+    #     lat = df_biz['lat'],
+    #     lon = df_biz['long'],
+    #     text = text,
+    #     hoverinfo = 'text',
+    #     type = 'scattermapbox',
+    #     customdata = df_biz['uid'],
+    #     marker = dict(size=10,color=df_biz['color'],opacity=.6)
+    # )]
     # else: 
     #         filtered_df = df1
     #         data = [dict(
