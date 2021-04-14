@@ -110,8 +110,9 @@ def create_rev_scat(clickData,year,rev):
     Output('month-rev-bar', 'figure'),
     [Input('revenue-map', 'clickData'),
     Input('month', 'value'),
-    Input('crat', 'children')])         
-def create_month_bar(clickData, month, crat):
+    Input('crat', 'children'),
+    Input('month-year', 'value')])         
+def create_month_bar(clickData, month, crat, mo_yr):
     print(month)
     # print(df_revenue.head())
     crat = pd.read_json(crat)
@@ -123,9 +124,12 @@ def create_month_bar(clickData, month, crat):
     filtered_county = clickData['points'][-1]['text']
     # print(filtered_county)
     county_rev = df[df['county'] == filtered_county]
-    
+    # print(county_rev)
     county_rev_month = county_rev.groupby(['month'], as_index=False)['tot_sales'].sum()
-    print(county_rev_month)
+    # print(county_rev_month)
+
+    crm = county_rev[county_rev['month'] == month]
+    print(crm)
     
     # selected_county = crat[filtered_county]
     # selected_county.reset_index(inplace=True)
@@ -136,10 +140,14 @@ def create_month_bar(clickData, month, crat):
     #     {'x': selected_county['year'], 'y': selected_county['rec_sales'], 'type': 'bar', 'name': 'Rec Sales' },
     #     {'x': selected_county['year'], 'y': selected_county['tot_sales'], 'type': 'bar', 'name': 'Tot Sales' },
     # ]
-    trace1 = [
-        {'y': county_rev_month['tot_sales'], 'x': county_rev_month['month'], 'type': 'bar', 'name': 'month'}
-    ]
-
+    if mo_yr == 'yr':
+        trace1 = [
+            {'y': county_rev_month['tot_sales'], 'x': county_rev_month['month'], 'type': 'bar', 'name': 'month'}
+        ]
+    else:
+        trace1 = [
+            {'y': crm['tot_sales'], 'x': crm['year'], 'type': 'bar', 'name': 'month'}
+        ]
     
     return {
         'data': trace1,

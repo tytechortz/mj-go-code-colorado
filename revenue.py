@@ -72,6 +72,19 @@ def revenue_App():
             ],
                 className='eight columns'
             ),
+            html.Div([
+                dcc.RadioItems(id='month-year', 
+                options=[
+                    {'label':'Month', 'value':'mo'},
+                    {'label':'Year', 'value':'yr'},
+                ],
+                labelStyle={'display':'inline-block', 'margin': 0, 'padding': 1},
+                value='mo',
+                style = {'text-align': 'center'}
+                ),
+            ],
+                className='four columns'
+            ),
         ],
             className='row'
         ),
