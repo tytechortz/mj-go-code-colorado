@@ -5,8 +5,11 @@ import dash_html_components as html
 
 body = dbc.Container([
     html.Div([
-        html.H2('Colorado Cannabis')
-
+        html.Div([
+            html.H2('Colorado Cannabis', style={'text-align': 'center'})
+        ],
+            className='twelve columns'  
+        ),
     ],
         className='row'
     ),

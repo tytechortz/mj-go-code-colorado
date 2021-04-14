@@ -56,6 +56,27 @@ def clean_crat(clickData):
     # print(crat)
     return crat.to_json()
 
+# @app.callback(
+#     Output('month-selector', 'children'),
+#     Input('month-year', 'value'))
+# def show_month_slider(mo_yr):
+#     if mo_yr == 'mo':
+#         return html.Div([
+#             dcc.Slider(
+#                 id='month',
+#                 min=1,
+#                 max=12,
+#                 step=1,
+#                 marks={x: '{}'.format(x) for x in range(1, 13)},
+#                 value=1
+#             )
+#             ],
+#                 className='twelve columns'
+#             ),
+    # else:
+    #     return html.H6('-')
+    
+
 @app.callback(
     Output('rev-scatter', 'figure'),
     [Input('revenue-map', 'clickData'),
@@ -109,7 +130,7 @@ def create_rev_scat(clickData,year,rev):
                 font = {'size': 8}
             )
         }
-
+        
 @app.callback(
     Output('month-rev-bar', 'figure'),
     [Input('revenue-map', 'clickData'),
@@ -136,10 +157,16 @@ def create_month_bar(clickData, month, crat, mo_yr):
         trace1 = [
             {'y': county_rev_month['tot_sales'], 'x': county_rev_month['month'], 'type': 'bar', 'name': 'month'}
         ]
-    else:
+    elif mo_yr == 'mo':
         trace1 = [
             {'y': crm['tot_sales'], 'x': crm['year'], 'type': 'bar', 'name': 'month'}
         ]
+    
+    # trace1 = [
+    #     {'y': county_rev_month['tot_sales'], 'x': county_rev_month['month'], 'type': 'bar', 'name': 'month'}
+    # ]
+
+        
     
     return {
         'data': trace1,

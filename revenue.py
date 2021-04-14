@@ -48,11 +48,8 @@ def revenue_App():
                 className='eight columns'
             ),
             html.Div([
-                dcc.Markdown('''Click on counties and use year slider to see annual county
-            revenue data displayed in graphs.  Green counties have at
-            least one form of legalized cannabis, green circles show 
-            relative cannabis revenue for selected year. 
-            Select sales check boxes to display revenue graphically below.''')
+                dcc.Markdown('''Click on counties and use year slider to see annual county revenue data displayed in graphs.  Green counties have at least one form of legalized cannabis, green circles show relative cannabis revenue for selected year. 
+                Select sales check boxes to display revenue graphically by type below left. Select Year or Month button below to display county revenue by month across years, or to display cumulative revenue totals for each month, respectively.''')
             ],
                 className='four columns'
             ),
@@ -75,8 +72,8 @@ def revenue_App():
             html.Div([
                 dcc.RadioItems(id='month-year', 
                 options=[
-                    {'label':'Month', 'value':'mo'},
                     {'label':'Year', 'value':'yr'},
+                    {'label':'Month', 'value':'mo'},
                 ],
                 labelStyle={'display':'inline-block', 'margin': 0, 'padding': 1},
                 value='mo',
