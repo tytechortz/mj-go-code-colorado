@@ -583,8 +583,8 @@ def display_per_lic_rev(clickData, pl_data):
     Output('biz-map', 'figure'),
     Input('categories', 'value'))
 def update_biz_map(selected_values):
-    print(df_biz)
-    print(df_biz.columns)
+    # print(df_biz)
+    # print(df_biz.columns)
     # print(df_biz['License_No'])
     df1 = pd.DataFrame(df_biz.loc[df_biz['Category'] == selected_values])
    
@@ -646,10 +646,11 @@ def update_biz_map(selected_values):
     Output('biz-bar', 'figure'),
     Input('year', 'value'))
 def create_rev_bar(year):
-    biz_year = df_biz.loc[df_biz['Year'] == year]
+    biz_year = df_bidness.loc[df_bidness['Year'] == year]
     biz_year_dec = biz_year[biz_year['Month'] == 12]
+    print(biz_year_dec)
 
-    biz_type = biz_year_dec.groupby('Category')['License_No'].nunique()
+    biz_type = biz_year_dec.groupby('Category')['Licensee'].nunique()
     biz_count = pd.DataFrame({'Category':biz_type.index, 'Value':biz_type.values})
    
     trace1 = [
@@ -663,7 +664,7 @@ def create_rev_bar(year):
             yaxis = go.layout.YAxis(
                 automargin = True,
             ),
-            title = 'License Count for {}'.format(year)
+            title = 'Licensee Count for {}'.format(year)
         ),
     } 
 

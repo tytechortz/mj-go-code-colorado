@@ -107,7 +107,7 @@ for i in df_biz['Category'].unique():
 
 categories_table = pd.DataFrame({'Category':df_biz['Category'].unique()})
 
-df_bidness = pd.read_csv('https://data.colorado.gov/resource/sqs8-2un5.csv?$select=Category,License_No,Month,Year&$limit=166000&$$app_token='+ config.state_data_token)
+df_bidness = pd.read_csv('https://data.colorado.gov/resource/sqs8-2un5.csv?$select=Category,Licensee,License_No,Month,Year&$limit=400000&$$app_token='+ config.state_data_token)
 # print(df_bidness)
 
 
