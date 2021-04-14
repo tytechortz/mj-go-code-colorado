@@ -77,18 +77,6 @@ def revenue_App():
         ),
         html.Div([
             html.Div([
-                dcc.Slider(
-                    id='month',
-                    min=1,
-                    max=12,
-                    step=1,
-                    marks={x: '{}'.format(x) for x in range(1, 13)},
-                    value=1
-                )
-            ],
-                className='six columns'
-            ),
-            html.Div([
                 dcc.Checklist(
                     id='rev',
                     options=[
@@ -103,17 +91,29 @@ def revenue_App():
             ],
                 className='six columns'
             ),
+            html.Div([
+                dcc.Slider(
+                    id='month',
+                    min=1,
+                    max=12,
+                    step=1,
+                    marks={x: '{}'.format(x) for x in range(1, 13)},
+                    value=1
+                )
+            ],
+                className='six columns'
+            ),
         ],
             className='row'
         ),
         html.Div([
             html.Div([
-                dcc.Graph(id='rev-bar')
+                dcc.Graph(id='rev-scatter')
             ],
                 className='six columns'
             ),
             html.Div([
-                dcc.Graph(id='rev-scatter')
+                dcc.Graph(id='rev-bar')
             ],
                 className='six columns'
             ),
