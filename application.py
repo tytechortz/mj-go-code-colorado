@@ -20,6 +20,10 @@ app = dash.Dash()
 application = app.server
 app.config.suppress_callback_exceptions = True
 
+# month_values = {'JAN':1, 'FEB':2, 'MAR':3, 'APR':4, 'MAY':5, 'JUN':6, 'JUL':7, 'AUG':8, 'SEP':9, 'OCT':10, 'NOV':11, 'DEC':12}
+
+month_values ={1:'JANUARY', 2:'FEBRUARY', 3:'MARCH', 4:'APRIL', 5:'MAY', 6:'JUNE', 7:'JULY', 8:'AUGUST', 9:'SEPTEMBER', 10:'OCTOBER', 11:'NOVEMBER', 12:'DECEMBER'}
+
 app.layout = html.Div([
     dcc.Location(id = 'url', refresh = False),
     html.Div(id = 'page-content')
@@ -118,9 +122,6 @@ def create_month_bar(clickData, month, crat, mo_yr):
     crat = pd.read_json(crat)
     crat.reset_index(inplace=True)
     df = df_rev
-    # print(df)
-
-    # filtered_county = crat['county'] ==  clickData['points'][-1]['text']
     filtered_county = clickData['points'][-1]['text']
     # print(filtered_county)
     county_rev = df[df['county'] == filtered_county]
@@ -131,15 +132,6 @@ def create_month_bar(clickData, month, crat, mo_yr):
     crm = county_rev[county_rev['month'] == month]
     print(crm)
     
-    # selected_county = crat[filtered_county]
-    # selected_county.reset_index(inplace=True)
-    # print(selected_county)
-
-    # trace1 = [
-    #     {'x': selected_county['year'], 'y': selected_county['med_sales'], 'type': 'bar', 'name': 'Med Sales' },
-    #     {'x': selected_county['year'], 'y': selected_county['rec_sales'], 'type': 'bar', 'name': 'Rec Sales' },
-    #     {'x': selected_county['year'], 'y': selected_county['tot_sales'], 'type': 'bar', 'name': 'Tot Sales' },
-    # ]
     if mo_yr == 'yr':
         trace1 = [
             {'y': county_rev_month['tot_sales'], 'x': county_rev_month['month'], 'type': 'bar', 'name': 'month'}
@@ -153,7 +145,7 @@ def create_month_bar(clickData, month, crat, mo_yr):
         'data': trace1,
         'layout': go.Layout(
             height = 350,
-            title = '{} COUNTY REVENUE BY MONTH'.format(clickData['points'][-1]['text']),
+            title = '{} COUNTY REVENUE FOR {}'.format(clickData['points'][-1]['text'], month_values[month]),
             font = {'size': 8}
         ),
     }
