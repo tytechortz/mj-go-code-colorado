@@ -107,6 +107,50 @@ def create_rev_scat(clickData,year,rev):
         }
 
 @app.callback(
+    Output('month-rev-bar', 'figure'),
+    [Input('revenue-map', 'clickData'),
+    Input('month', 'value'),
+    Input('crat', 'children')])         
+def create_month_bar(clickData, month, crat):
+    print(month)
+    # print(df_revenue.head())
+    crat = pd.read_json(crat)
+    crat.reset_index(inplace=True)
+    df = df_rev
+    # print(df)
+
+    # filtered_county = crat['county'] ==  clickData['points'][-1]['text']
+    filtered_county = clickData['points'][-1]['text']
+    # print(filtered_county)
+    county_rev = df[df['county'] == filtered_county]
+    
+    county_rev_month = county_rev.groupby(['month'], as_index=False)['tot_sales'].sum()
+    print(county_rev_month)
+    
+    # selected_county = crat[filtered_county]
+    # selected_county.reset_index(inplace=True)
+    # print(selected_county)
+
+    # trace1 = [
+    #     {'x': selected_county['year'], 'y': selected_county['med_sales'], 'type': 'bar', 'name': 'Med Sales' },
+    #     {'x': selected_county['year'], 'y': selected_county['rec_sales'], 'type': 'bar', 'name': 'Rec Sales' },
+    #     {'x': selected_county['year'], 'y': selected_county['tot_sales'], 'type': 'bar', 'name': 'Tot Sales' },
+    # ]
+    trace1 = [
+        {'y': county_rev_month['tot_sales'], 'x': county_rev_month['month'], 'type': 'bar', 'name': 'month'}
+    ]
+
+    
+    return {
+        'data': trace1,
+        'layout': go.Layout(
+            height = 350,
+            title = '{} COUNTY REVENUE BY MONTH'.format(clickData['points'][-1]['text']),
+            font = {'size': 8}
+        ),
+    }
+
+@app.callback(
     Output('rev-bar', 'figure'),
     [Input('revenue-map', 'clickData'),
     Input('crat', 'children')])         
@@ -654,7 +698,7 @@ def create_rev_bar(year):
     biz_count = pd.DataFrame({'Category':biz_type.index, 'Value':biz_type.values})
    
     trace1 = [
-        {'y': biz_count['Category'], 'x': biz_count['Value'], 'type': 'bar','orientation':'h','name': '' },
+        {'y': biz_count['Category'], 'x': biz_count['Value'], 'type': 'bar', 'orientation':'h','name': '' },
     ]
     
     return {
