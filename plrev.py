@@ -41,7 +41,7 @@ def plrev_App():
                 className='eight columns'
             ),
             html.Div([
-                dcc.Markdown('''Click on counties to show revenue, license count, revenue per license, county ranking, and revenue change from 2019 to 2020. Counties are shaded to indicate realative revenue per license, with darker shades representing higher values. 2019 is the most recent year for license information''')
+                dcc.Markdown('''Click on green-shaded counties to show revenue, license count, revenue per license, county ranking, and revenue change from 2019 to 2020. Counties are shaded to indicate realative revenue per license, with darker shades representing higher values. 2019 is the most recent year for license information.''')
             ],
                 className='four columns'
             ),
@@ -84,7 +84,7 @@ def plrev_App():
             html.Div([
                 html.Div(id='pl-info')
             ],
-                className='six columns'
+                className='seven columns'
             ),
         ],
             className='row'

@@ -18,7 +18,7 @@ def biz_App():
                 ],
                     className='two columns'
                 ),
-                html.H4('Businesses',
+                html.H4('Cannabis Businesses',
                 className='twelve columns',
                 style={'text-align': 'center'}
             ),

@@ -384,6 +384,125 @@ def display_cnty_pop(clickData, selected_year):
    
     return fig
 
+@app.callback(
+     Output('pc-info', 'children'),
+     Input('pcrev-map', 'clickData'))
+def display_per_cap_info(clickData):
+    county = clickData['points'][-1]['text']
+    year1 = 2000
+    year2 = 2010
+
+
+    return html.Div([
+        html.Div([
+            html.Div([
+                html.Div([
+                    html.Div([
+                        html.Div([
+                            html.H6('Per Capita Data for {} County Between {} and {}'.format(county, year1, year2), style={'text-align': 'center'}),
+                        ],
+                            className='twelve columns'
+                        ),
+                    ],
+                        className=('row')
+                    ),
+        #             html.Div([
+        #                 html.Div([
+        #                     html.H6('Total Revenue in 2019'),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #                 html.Div([
+        #                     html.H6('${:,}'.format(total_rev_2019), style={'text-align': 'right'}),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #             ],
+        #                 className='row'
+        #             ),
+        #             html.Div([
+        #                 html.Div([
+        #                     html.H6('2019 License Count'),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #                 html.Div([
+        #                     html.H6('{}'.format(biz_count), style={'text-align': 'right'}),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #             ],
+        #                 className='row'
+        #             ),
+        #             html.Div([
+        #                 html.Div([
+        #                     html.H6('Revenue Per License', style={'text-align': 'left'}),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #                 html.Div([
+        #                     html.H6('${:,}'.format(rpl_2019), style={'text-align': 'right'}),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #             ],
+        #                 className='row'
+        #             ),
+        #             html.Div([
+        #                 html.Div([
+        #                     html.H6('Revenue Per License Rank', style={'text-align': 'left'}),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #                 html.Div([
+        #                     html.H6('{}'.format(rpl_rank_2019), style={'text-align': 'right'}),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #             ],
+        #                 className='row'
+        #             ),
+        #             html.Div([
+        #                 html.Div([
+        #                     html.H6('Total Revenue in 2020'),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #                 html.Div([
+        #                     html.H6('${:,}'.format(total_rev_2020), style={'text-align': 'right'}),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #             ],
+        #                 className='row'
+        #             ),
+        #             html.Div([
+        #                 html.Div([
+        #                     html.H6('Revenue Change 2019 to 2020'),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+        #                 html.Div([
+        #                     html.H6('{:.0%}'.format(rev_change), style={'text-align': 'right'}),
+        #                 ],
+        #                     className='six columns'
+        #                 ),
+                    # ],
+                    #     className='row'
+                    # ),
+                ],
+                    className='round1'
+                ),
+            ],
+                className='pretty_container'
+            ),
+        ],
+            className='twelve columns'
+        ),
+    ],
+        className='row'
+    ),
+
 # License Rev Callbacks ###############################
 @app.callback(
     Output('pl-data', 'children'),
