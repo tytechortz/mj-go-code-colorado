@@ -394,48 +394,37 @@ def display_per_cap_info(clickData, year):
     year2 = year[1]
     df_rev = df_revenue[df_revenue['county'] == county]
     df_rev = df_rev[df_rev['year'] < 2021]
-    print(df_rev)
+    # print(df_rev)
     df_rev = df_rev[df_rev['tot_sales'] != 0]
-    print(df_rev)
+    # print(df_rev)
     rev_start_year = df_rev['year'].iloc[0]
-    print(rev_start_year)
+    # print(rev_start_year)
     df_pcrev = df_pc[df_pc['county'] == county]
+    print(df_pcrev)
+    pcrev = int(df_pcrev['pc_rev'].iloc[-1])
 
     df_county_pop = df_pop[df_pop['county'] == county]
-    df_county_pop = df_county_pop[(df_county_pop['year'] >= year[0]) & (df_county_pop['year'] <= year[1])]
-
-    # if year2 > 2020:
-    #     df2 = df_rev[df_rev['year'] == 2020]
-    #     rev_year2 = 2020
-    # else:
-    #     df2 = df_rev[df_rev['year'] == year2]
-    #     rev_year2 = year2
-    
-    # if year1 < 2014:
-    #     rev_year1 = 2014
-    # else:
-    #     rev_year1 = year1
-
+    df_county_pop = df_county_pop[(df_county_pop['year'] >= year1) & (df_county_pop['year'] <= year2)]
+    # print(df_county_pop)
+    pop1 = df_county_pop['totalpopulation'].iloc[0]
+    pop2 = df_county_pop['totalpopulation'].iloc[-1]
+    pop_change = (pop2 - pop1) / pop1
+    # print(pop_change)
 
 
     df1 = df_rev[df_rev['year'] == rev_start_year]
     # df2 = df_rev['tot_sales'].iloc[-1]
-    print(df1)
+    # print(df1)
     # print(df2)
     # df2 = df_rev[df_rev['year'] == year2]
     rev1 = df1['tot_sales'].iloc[0]
     rev2 = df_rev['tot_sales'].iloc[-1]
     rev_year2 = df_rev['year'].iloc[-1]
     # rev2 = df2['tot_sales'].iloc[0]
-    print(rev1)
-    print(rev2)
+    # print(rev1)
+    # print(rev2)
     change = (rev2 - rev1) / rev1
-    # if ((rev2 - rev1) / rev1 != 0).any():
-    #     change = (rev2 - rev1) / rev1
-    # else:
-    #     change = 0
-    # change = (rev2 - rev1) / rev1 if rev1 != 0.any(): else 0
-    print(change)
+    # print(change)
 
 
     return html.Div([
@@ -471,28 +460,28 @@ def display_per_cap_info(clickData, year):
                         ],
                             className='nine columns'
                         ),
-                        # html.Div([
-                        #     html.H6('{}'.format(biz_count), style={'text-align': 'right'}),
-                        # ],
-                        #     className='three columns'
-                        # ),
+                        html.Div([
+                            html.H6('{:.0%}'.format(pop_change), style={'text-align': 'right'}),
+                        ],
+                            className='three columns'
+                        ),
                     ],
                         className='row'
                     ),
-        #             html.Div([
-        #                 html.Div([
-        #                     html.H6('Revenue Per License', style={'text-align': 'left'}),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #                 html.Div([
-        #                     html.H6('${:,}'.format(rpl_2019), style={'text-align': 'right'}),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #             ],
-        #                 className='row'
-        #             ),
+                    html.Div([
+                        html.Div([
+                            html.H6('Per Capita Revenue in 2020', style={'text-align': 'left'}),
+                        ],
+                            className='nine columns'
+                        ),
+                        html.Div([
+                            html.H6('${:,}'.format(pcrev), style={'text-align': 'right'}),
+                        ],
+                            className='three columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
         #             html.Div([
         #                 html.Div([
         #                     html.H6('Revenue Per License Rank', style={'text-align': 'left'}),
