@@ -87,12 +87,12 @@ def pcrev_App():
             html.Div([
                 dcc.Graph(id='per-cap-rev-bar')
             ],
-                className='eight columns'
+                className='seven columns'
             ),
             html.Div([
                 html.Div(id='pc-info')
             ],
-                className='four columns'
+                className='five columns'
             ),
         ],
             className='row'

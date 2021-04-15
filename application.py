@@ -392,6 +392,36 @@ def display_per_cap_info(clickData, year):
     county = clickData['points'][-1]['text']
     year1 = year[0]
     year2 = year[1]
+    df_rev = df_revenue[df_revenue['county'] == county]
+    df_rev = df_rev[df_rev['year'] < 2021]
+    # print(df_pc)
+    df_pcrev = df_pc[df_pc['county'] == county]
+
+    df_county_pop = df_pop[df_pop['county'] == county]
+    df_county_pop = df_county_pop[(df_county_pop['year'] >= year[0]) & (df_county_pop['year'] <= year[1])]
+
+    if year2 > 2020:
+        df2 = df_rev[df_rev['year'] == 2020]
+        rev_year2 = 2020
+    else:
+        df2 = df_rev[df_rev['year'] == year2]
+        rev_year2 = year2
+    
+    if year1 < 2014:
+        rev_year1 = 2014
+    else:
+        rev_year1 = year1
+
+
+
+    df1 = df_rev[df_rev['year'] == year1]
+    # df2 = df_rev[df_rev['year'] == year2]
+    rev1 = int(df1['tot_sales'])
+    rev2 = int(df2['tot_sales'])
+    print(rev1)
+    print(rev2)
+    change = (rev2 - rev1) / rev1
+    print(change)
 
 
     return html.Div([
@@ -407,20 +437,20 @@ def display_per_cap_info(clickData, year):
                     ],
                         className=('row')
                     ),
-        #             html.Div([
-        #                 html.Div([
-        #                     html.H6('Total Revenue in 2019'),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #                 html.Div([
-        #                     html.H6('${:,}'.format(total_rev_2019), style={'text-align': 'right'}),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #             ],
-        #                 className='row'
-        #             ),
+                    html.Div([
+                        html.Div([
+                            html.H6('Revenue Change {}-{}'.format(rev_year1, rev_year2)),
+                        ],
+                            className='nine columns'
+                        ),
+                        html.Div([
+                            html.H6('{:.0%}'.format(change), style={'text-align': 'right'}),
+                        ],
+                            className='three columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
         #             html.Div([
         #                 html.Div([
         #                     html.H6('2019 License Count'),
