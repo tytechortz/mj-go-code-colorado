@@ -399,9 +399,14 @@ def display_per_cap_info(clickData, year):
     # print(df_rev)
     rev_start_year = df_rev['year'].iloc[0]
     # print(rev_start_year)
-    df_pcrev = df_pc[df_pc['county'] == county]
+    df_pcrev = df_pc[df_pc['year'] == 2020]
     print(df_pcrev)
     pcrev = int(df_pcrev['pc_rev'].iloc[-1])
+    df_per_cap_rank = df_pcrev.sort_values(by=['pc_rev'], ascending=False)
+    df_per_cap_rank.reset_index(inplace=True)
+    print(df_per_cap_rank)
+    pc_rev_rank_2020 = df_per_cap_rank[df_per_cap_rank['county'] == county].index[0] + 1
+    print(pc_rev_rank_2020)
 
     df_county_pop = df_pop[df_pop['county'] == county]
     df_county_pop = df_county_pop[(df_county_pop['year'] >= year1) & (df_county_pop['year'] <= year2)]
@@ -482,20 +487,20 @@ def display_per_cap_info(clickData, year):
                     ],
                         className='row'
                     ),
-        #             html.Div([
-        #                 html.Div([
-        #                     html.H6('Revenue Per License Rank', style={'text-align': 'left'}),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #                 html.Div([
-        #                     html.H6('{}'.format(rpl_rank_2019), style={'text-align': 'right'}),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #             ],
-        #                 className='row'
-        #             ),
+                    html.Div([
+                        html.Div([
+                            html.H6('2020 Per Capita Revenue Rank', style={'text-align': 'left'}),
+                        ],
+                            className='nine columns'
+                        ),
+                        html.Div([
+                            html.H6('{}'.format(pc_rev_rank_2020), style={'text-align': 'right'}),
+                        ],
+                            className='three columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
         #             html.Div([
         #                 html.Div([
         #                     html.H6('Total Revenue in 2020'),
