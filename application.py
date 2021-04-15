@@ -386,11 +386,12 @@ def display_cnty_pop(clickData, selected_year):
 
 @app.callback(
      Output('pc-info', 'children'),
-     Input('pcrev-map', 'clickData'))
-def display_per_cap_info(clickData):
+     [Input('pcrev-map', 'clickData'),
+     Input('year2', 'value')])
+def display_per_cap_info(clickData, year):
     county = clickData['points'][-1]['text']
-    year1 = 2000
-    year2 = 2010
+    year1 = year[0]
+    year2 = year[1]
 
 
     return html.Div([
@@ -399,7 +400,7 @@ def display_per_cap_info(clickData):
                 html.Div([
                     html.Div([
                         html.Div([
-                            html.H6('Per Capita Data for {} County Between {} and {}'.format(county, year1, year2), style={'text-align': 'center'}),
+                            html.H6('Data for {} County Between {} and {}'.format(county, year1, year2), style={'text-align': 'center'}),
                         ],
                             className='twelve columns'
                         ),
