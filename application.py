@@ -367,7 +367,7 @@ def display_cnty_pop(clickData, selected_year):
         #    ),
         ],
         layout={
-            'yaxis': {'title': 'Revenue'},
+            'yaxis': {'title': 'Per Cap Revenue'},
             'yaxis2': {'title': 'Population', 'overlaying': 'y', 'side': 'right'},
             'height': 450,
         }
@@ -394,33 +394,47 @@ def display_per_cap_info(clickData, year):
     year2 = year[1]
     df_rev = df_revenue[df_revenue['county'] == county]
     df_rev = df_rev[df_rev['year'] < 2021]
-    # print(df_pc)
+    print(df_rev)
+    df_rev = df_rev[df_rev['tot_sales'] != 0]
+    print(df_rev)
+    rev_start_year = df_rev['year'].iloc[0]
+    print(rev_start_year)
     df_pcrev = df_pc[df_pc['county'] == county]
 
     df_county_pop = df_pop[df_pop['county'] == county]
     df_county_pop = df_county_pop[(df_county_pop['year'] >= year[0]) & (df_county_pop['year'] <= year[1])]
 
-    if year2 > 2020:
-        df2 = df_rev[df_rev['year'] == 2020]
-        rev_year2 = 2020
-    else:
-        df2 = df_rev[df_rev['year'] == year2]
-        rev_year2 = year2
+    # if year2 > 2020:
+    #     df2 = df_rev[df_rev['year'] == 2020]
+    #     rev_year2 = 2020
+    # else:
+    #     df2 = df_rev[df_rev['year'] == year2]
+    #     rev_year2 = year2
     
-    if year1 < 2014:
-        rev_year1 = 2014
-    else:
-        rev_year1 = year1
+    # if year1 < 2014:
+    #     rev_year1 = 2014
+    # else:
+    #     rev_year1 = year1
 
 
 
-    df1 = df_rev[df_rev['year'] == year1]
+    df1 = df_rev[df_rev['year'] == rev_start_year]
+    # df2 = df_rev['tot_sales'].iloc[-1]
+    print(df1)
+    # print(df2)
     # df2 = df_rev[df_rev['year'] == year2]
-    rev1 = int(df1['tot_sales'])
-    rev2 = int(df2['tot_sales'])
+    rev1 = df1['tot_sales'].iloc[0]
+    rev2 = df_rev['tot_sales'].iloc[-1]
+    rev_year2 = df_rev['year'].iloc[-1]
+    # rev2 = df2['tot_sales'].iloc[0]
     print(rev1)
     print(rev2)
     change = (rev2 - rev1) / rev1
+    # if ((rev2 - rev1) / rev1 != 0).any():
+    #     change = (rev2 - rev1) / rev1
+    # else:
+    #     change = 0
+    # change = (rev2 - rev1) / rev1 if rev1 != 0.any(): else 0
     print(change)
 
 
@@ -430,7 +444,7 @@ def display_per_cap_info(clickData, year):
                 html.Div([
                     html.Div([
                         html.Div([
-                            html.H6('Data for {} County Between {} and {}'.format(county, year1, year2), style={'text-align': 'center'}),
+                            html.H6('Data for {} County'.format(county), style={'text-align': 'center'}),
                         ],
                             className='twelve columns'
                         ),
@@ -439,7 +453,7 @@ def display_per_cap_info(clickData, year):
                     ),
                     html.Div([
                         html.Div([
-                            html.H6('Revenue Change {}-{}'.format(rev_year1, rev_year2)),
+                            html.H6('Revenue Change {}-{}'.format(rev_start_year, rev_year2)),
                         ],
                             className='nine columns'
                         ),
@@ -451,20 +465,20 @@ def display_per_cap_info(clickData, year):
                     ],
                         className='row'
                     ),
-        #             html.Div([
-        #                 html.Div([
-        #                     html.H6('2019 License Count'),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #                 html.Div([
-        #                     html.H6('{}'.format(biz_count), style={'text-align': 'right'}),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #             ],
-        #                 className='row'
-        #             ),
+                    html.Div([
+                        html.Div([
+                            html.H6('Pop. Change {}-{}'.format(year1, year2)),
+                        ],
+                            className='nine columns'
+                        ),
+                        # html.Div([
+                        #     html.H6('{}'.format(biz_count), style={'text-align': 'right'}),
+                        # ],
+                        #     className='three columns'
+                        # ),
+                    ],
+                        className='row'
+                    ),
         #             html.Div([
         #                 html.Div([
         #                     html.H6('Revenue Per License', style={'text-align': 'left'}),
