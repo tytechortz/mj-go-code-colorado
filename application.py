@@ -401,12 +401,15 @@ def display_per_cap_info(clickData, year):
     # print(rev_start_year)
     df_pcrev = df_pc[df_pc['year'] == 2020]
     print(df_pcrev)
-    pcrev = int(df_pcrev['pc_rev'].iloc[-1])
+    df_cnty_pc_rev = df_pcrev[df_pcrev['county'] == county]
+    print(df_cnty_pc_rev)
+    pcrev = df_pcrev['pc_rev'].iloc[0]
+    print(pcrev)
     df_per_cap_rank = df_pcrev.sort_values(by=['pc_rev'], ascending=False)
     df_per_cap_rank.reset_index(inplace=True)
-    print(df_per_cap_rank)
+    # print(df_per_cap_rank)
     pc_rev_rank_2020 = df_per_cap_rank[df_per_cap_rank['county'] == county].index[0] + 1
-    print(pc_rev_rank_2020)
+    # print(pc_rev_rank_2020)
 
     df_county_pop = df_pop[df_pop['county'] == county]
     df_county_pop = df_county_pop[(df_county_pop['year'] >= year1) & (df_county_pop['year'] <= year2)]
@@ -415,6 +418,18 @@ def display_per_cap_info(clickData, year):
     pop2 = df_county_pop['totalpopulation'].iloc[-1]
     pop_change = (pop2 - pop1) / pop1
     # print(pop_change)
+    # print(df_pop)
+    df_2020_pop = df_pop[df_pop['year'] == 2020]
+    df_2020_pop.rename(columns={'totalpopulation':'2020_pop'}, inplace=True)
+    df_2050_pop = df_pop[df_pop['year'] == 2050]
+    df_2050_pop.rename(columns = {'totalpopulation':'2050_pop'}, inplace=True)
+    # print(df_2050_pop)
+    df_pop_change = pd.merge(df_2020_pop, df_2050_pop, how='left', left_on='county', right_on='county')
+    df_pop_change['pop_change'] = df_pop_change['2050_pop'] - df_pop_change['2020_pop']
+    # print(df_pop_change)
+    df_pop_change_rank = df_pop_change.sort_values(by=['pop_change'], ascending=False)
+    df_pop_change_rank.reset_index(inplace=True)
+    pop_change_rank = df_pop_change_rank[df_pop_change_rank['county'] == county].index[0] + 1
 
 
     df1 = df_rev[df_rev['year'] == rev_start_year]
@@ -480,7 +495,7 @@ def display_per_cap_info(clickData, year):
                             className='nine columns'
                         ),
                         html.Div([
-                            html.H6('${:,}'.format(pcrev), style={'text-align': 'right'}),
+                            html.H6('${:.0f}'.format(pcrev), style={'text-align': 'right'}),
                         ],
                             className='three columns'
                         ),
@@ -501,20 +516,20 @@ def display_per_cap_info(clickData, year):
                     ],
                         className='row'
                     ),
-        #             html.Div([
-        #                 html.Div([
-        #                     html.H6('Total Revenue in 2020'),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #                 html.Div([
-        #                     html.H6('${:,}'.format(total_rev_2020), style={'text-align': 'right'}),
-        #                 ],
-        #                     className='six columns'
-        #                 ),
-        #             ],
-        #                 className='row'
-        #             ),
+                    html.Div([
+                        html.Div([
+                            html.H6('Proj. Pop. Growth Rank'),
+                        ],
+                            className='nine columns'
+                        ),
+                        html.Div([
+                            html.H6('{:,}'.format(pop_change_rank), style={'text-align': 'right'}),
+                        ],
+                            className='three columns'
+                        ),
+                    ],
+                        className='row'
+                    ),
         #             html.Div([
         #                 html.Div([
         #                     html.H6('Revenue Change 2019 to 2020'),
